@@ -279,6 +279,13 @@ RELATIONS:
   VALUE: ZEP-SYRS-15
 - TYPE: Parent
   VALUE: ZEP-SYRS-16
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Thread name
 STATEMENT: >>>
 The Zephyr RTOS shall provide an interface to assign and retrieve a human-readable
 name string for a thread, to aid in debugging and tracing.
