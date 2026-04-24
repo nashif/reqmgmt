@@ -15,9 +15,9 @@ UID: ZEP-SRS-7-1
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Installing static IRQ service routines (ISR).
+TITLE: Installing static IRQ service routines (ISR)
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to initialize a static IRQ service routine (ISR),
+The Zephyr RTOS shall provide a mechanism to initialize a static IRQ service routine (ISR),
 providing all parameters needed to configure the hardware and software.
 <<<
 RELATIONS:
@@ -29,7 +29,7 @@ UID: ZEP-SRS-7-2
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Static IRQ initial status.
+TITLE: Static IRQ initial status
 STATEMENT: >>>
 The static IRQ shall be initially disabled.
 <<<
@@ -38,13 +38,13 @@ RELATIONS:
   VALUE: ZEP-SYRS-7
 
 [REQUIREMENT]
-UID: ZEP-SRS-7-3 
+UID: ZEP-SRS-7-3
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Installing direct IRQ service routines (ISR).
+TITLE: Installing direct IRQ service routines (ISR)
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to initialize a direct IRQ handler,
+The Zephyr RTOS shall provide a mechanism to initialize a direct IRQ handler,
 providing all parameters needed to configure the hardware and software.
 <<<
 USER_STORY: >>>
@@ -60,7 +60,7 @@ UID: ZEP-SRS-7-4
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Direct IRQ initial status.
+TITLE: Direct IRQ initial status
 STATEMENT: >>>
 The direct IRQ shall be initially disabled.
 <<<
@@ -73,9 +73,9 @@ UID: ZEP-SRS-7-5
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Installing dynamic IRQ service routines (ISR).
+TITLE: Installing dynamic IRQ service routines (ISR)
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to initialize a dynamic IRQ service routine, 
+The Zephyr RTOS shall provide a mechanism to initialize a dynamic IRQ service routine,
 providing all parameters needed to configure the hardware and software.
 <<<
 RELATIONS:
@@ -87,7 +87,7 @@ UID: ZEP-SRS-7-6
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Dynamic IRQ initial status.
+TITLE: Dynamic IRQ initial status
 STATEMENT: >>>
 The dynamic IRQ shall be initially disabled.
 <<<
@@ -100,9 +100,9 @@ UID: ZEP-SRS-7-7
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: Uninstalling dynamic IRQ service routines (ISR).
+TITLE: Uninstalling dynamic IRQ service routines (ISR)
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to uninstall a dynamic ISR.
+The Zephyr RTOS shall provide a mechanism to uninstall a dynamic ISR.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -115,8 +115,8 @@ TYPE: Functional
 COMPONENT: Interrupts
 TITLE: Global IRQ disable
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to Disable all IRQs on a CPU, and 
-return the state the IRQ hardware prior to being disabled.
+The Zephyr RTOS shall provide a mechanism to disable all IRQs on a CPU and
+return the IRQ state prior to being disabled.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -129,8 +129,8 @@ TYPE: Functional
 COMPONENT: Interrupts
 TITLE: Global IRQ enable
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to Enable all IRQs on a CPU 
-and return them to thier previous state.
+The Zephyr RTOS shall provide a mechanism to enable all IRQs on a CPU
+and restore them to their previous state.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -143,48 +143,48 @@ TYPE: Functional
 COMPONENT: Interrupts
 TITLE: Specific IRQ disable
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to Disable a specified IRQ.
+The Zephyr RTOS shall provide a mechanism to disable a specified IRQ.
 <<<
 RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-7
 
 [REQUIREMENT]
-UID: ZEP-SRS-7-11 
+UID: ZEP-SRS-7-11
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
 TITLE: Specific IRQ enable
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to Enable a specified IRQ.
+The Zephyr RTOS shall provide a mechanism to enable a specified IRQ.
 <<<
 RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-7
 
 [REQUIREMENT]
-UID: ZEP-SRS-7-12 
+UID: ZEP-SRS-7-12
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: IRQ Enabled status
+TITLE: IRQ enabled status
 STATEMENT: >>>
-Zephyr RTOS shall provide mechanisms that returns the Enabled status 
-of a specified IRQ, where the status is Enabled or Disabled.
+The Zephyr RTOS shall provide an interface that returns the enabled status
+of a specified IRQ, where the status is either enabled or disabled.
 <<<
 RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-7
 
 [REQUIREMENT]
-UID: ZEP-SRS-7-13 
+UID: ZEP-SRS-7-13
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
-TITLE: ISR Context status
+TITLE: ISR context status
 STATEMENT: >>>
-Zephyr RTOS shall provide mechanisms that returns the execution context, 
-where the context is In-ISR or Not In-ISR.
+The Zephyr RTOS shall provide an interface that returns whether code is currently
+executing in ISR context or thread context.
 <<<
 USER_STORY: >>>
 As the developer of functions that may run in either ISR or THREAD context, 
@@ -195,7 +195,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-7
 
 [REQUIREMENT]
-UID: ZEP-SRS-7-14 
+UID: ZEP-SRS-7-14
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Interrupts
