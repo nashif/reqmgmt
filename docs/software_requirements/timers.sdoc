@@ -91,7 +91,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: ZEP-SRS-4-7
 STATUS: Draft
-TYPE: Non-Functional
+TYPE: Functional
 COMPONENT: Timers
 TITLE: Timer status
 STATEMENT: >>>
@@ -104,7 +104,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: ZEP-SRS-4-8
 STATUS: Draft
-TYPE: Non-Functional
+TYPE: Functional
 COMPONENT: Timers
 TITLE: Timer status reinitialization
 STATEMENT: >>>
