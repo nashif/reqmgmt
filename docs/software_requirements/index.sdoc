@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: Zephyr Software Requirements
-REQ_PREFIX: ZEP-SRS-0-
+PREFIX: ZEP-SRS-0-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: software_requirements.sgra
@@ -24,6 +24,27 @@ FILE: exception_and_error_handling.sdoc
 
 [DOCUMENT_FROM_FILE]
 FILE: system_initialization.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: clock.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: spinlock.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: atomic.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: events.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: message_queues.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: pipes.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: work_queues.sdoc
 
 [DOCUMENT_FROM_FILE]
 FILE: file_system.sdoc
