@@ -414,6 +414,264 @@ RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-35
 
+[REQUIREMENT]
+UID: ZEP-SRS-42-18
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Per-thread MPU stack guard region
+STATEMENT: >>>
+When CONFIG_MPU_STACK_GUARD is enabled, the Zephyr RTOS shall configure a dedicated
+MPU region as an unprivileged no-access guard at the bottom of every thread's stack
+at context switch time, so that a write beyond the stack bottom generates an
+immediate MPU fault for the exceeding thread regardless of privilege level.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user on an ARM or ARC platform, I want each thread to have a
+hardware guard region protecting the boundary at the base of its stack so that a
+stack overflow is caught immediately by the MPU rather than silently overwriting
+adjacent memory.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Health Monitoring and Watchdog
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-19
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Hardware watchdog driver API
+STATEMENT: >>>
+The Zephyr RTOS shall provide a standardised hardware watchdog driver API
+(wdt_setup, wdt_install_timeout, wdt_feed, wdt_disable) that allows an application
+to configure one or more timeout channels on a hardware watchdog peripheral, register
+a callback for the pre-reset warning window, and periodically feed each channel to
+prevent a system reset.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a portable API to configure and feed a hardware
+watchdog so that a global system lockup or infinite loop in any component is
+detected within a bounded time and the system is reset to a known state.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-20
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Per-thread task-level software watchdog
+STATEMENT: >>>
+When CONFIG_TASK_WDT is enabled, the Zephyr RTOS shall provide a software watchdog
+subsystem that assigns an independent timeout channel to each monitored thread via
+task_wdt_add(), requires periodic feeding via task_wdt_feed(), and invokes a
+per-channel application callback when any channel's timeout expires without being
+fed. When no callback is registered, the subsystem shall trigger a system reboot.
+The subsystem shall optionally back its internal timer with a hardware watchdog
+(CONFIG_TASK_WDT_HW_FALLBACK) so that a lockup in the task watchdog itself is also
+detected.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to monitor the liveness of individual threads
+independently so that a deadlock, priority inversion, or hang in any single thread
+is detected and handled within a configured time window, even on hardware that
+provides only a single watchdog channel.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-21
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Multi-stage watchdog timeout escalation
+STATEMENT: >>>
+When CONFIG_WDT_MULTISTAGE is enabled, the Zephyr RTOS watchdog driver API shall
+support multi-stage timeout configurations where each stage can be linked to the
+next, allowing progressive escalation (for example: first stage triggers a callback
+for diagnostic logging; second stage triggers a CPU core or SoC reset), giving the
+application an opportunity to perform corrective action before a hard reset occurs.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a pre-reset warning stage in the watchdog timeout
+sequence so that I can capture diagnostic information (e.g., register dump, fault
+log) before the system resets, aiding post-mortem analysis.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-22
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Watchdog suspend and resume across power state transitions
+STATEMENT: >>>
+The Zephyr RTOS task watchdog shall provide task_wdt_suspend() and task_wdt_resume()
+APIs to pause all watchdog channels before entering a system low-power state and
+resume them after waking, preventing spurious watchdog expirations caused by the
+system being intentionally idle.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user implementing power management, I want watchdog channels to be
+automatically paused when the system enters sleep so that a legitimate low-power
+idle does not trigger a watchdog reset.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-23
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Kernel thread liveness monitoring
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to periodically verify that all registered
+supervisor-mode threads are making forward progress, and shall invoke a configurable
+response action (such as thread restart, safe-state entry, or system reboot) when a
+monitored thread fails to demonstrate progress within a defined period.
+
+NOTE: This requirement is not fully met by the current Zephyr implementation.
+CONFIG_THREAD_MONITOR maintains a list of live threads but provides no periodic
+liveness check and no automatic response when a thread stalls. CONFIG_TASK_WDT
+supports per-thread monitoring but requires that each thread explicitly calls
+task_wdt_feed(), meaning a thread that is stuck in kernel code without calling
+task_wdt_feed() will not be detected until its channel timeout expires. There is
+no kernel-internal progress verification that does not rely on thread cooperation.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a safety-critical system, I want the kernel to
+detect automatically when any supervisor thread stops making progress without
+relying on that thread's own cooperation, so that a deadlocked or infinitely
+looping kernel thread is detected and handled regardless of whether it reaches its
+task_wdt_feed() call site.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Static Allocation Guarantee
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-24
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Compile-time static definition of all kernel object types
+STATEMENT: >>>
+The Zephyr RTOS shall provide compile-time static definition macros for every
+kernel object type — including threads (K_THREAD_DEFINE), timers (K_TIMER_DEFINE),
+semaphores (K_SEM_DEFINE), mutexes (K_MUTEX_DEFINE), memory slabs
+(K_MEM_SLAB_DEFINE), private heaps (K_HEAP_DEFINE), work queues, event objects,
+and message queues — so that all kernel objects required by an application can be
+allocated at link time without any runtime allocation call.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a safety-critical or MISRA-compliant application,
+I want to declare all kernel objects statically at compile time so that memory
+layout is fully determined before execution begins, eliminating the possibility of
+allocation failure at runtime.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-25
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Disabling the system heap to prohibit dynamic allocation
+STATEMENT: >>>
+When CONFIG_KERNEL_MEM_POOL is disabled or CONFIG_HEAP_MEM_POOL_SIZE is set to zero
+and no subsystem adds a HEAP_MEM_POOL_ADD_SIZE_* contribution, the Zephyr RTOS shall
+not compile or link k_malloc(), k_calloc(), k_realloc(), or k_aligned_alloc() into
+the application image, making any call to these functions a link-time error.
+
+This provides a build-time enforcement point that prevents accidental introduction
+of dynamic allocation into applications that require a static-only memory model.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user targeting IEC 61508 SIL or ISO 26262 ASIL certification, I
+want to be able to configure the build so that no dynamic memory allocation function
+is available, ensuring that the no-dynamic-allocation rule is enforced by the linker
+rather than relying on code review alone.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-26
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Deterministic O(1) memory slab allocation
+STATEMENT: >>>
+The Zephyr RTOS memory slab (k_mem_slab) shall provide fixed-block allocation and
+release from a statically pre-allocated pool with O(1) worst-case time, bounded
+memory consumption equal to the declared block count times block size, and a
+defined failure behaviour (return -ENOMEM) when no free block is available, so
+that timing and memory-bound properties of the allocating code path are fully
+analysable at design time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a memory allocator whose worst-case allocation time
+and maximum memory consumption are known at design time so that I can use it in
+time-critical code paths and demonstrate determinism to a safety assessor.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-27
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Build-time guard against subsystem-forced dynamic allocation
+STATEMENT: >>>
+The Zephyr RTOS build system shall provide a configuration mechanism to detect and
+reject any configuration where an enabled subsystem implicitly raises the effective
+heap pool size above zero (via HEAP_MEM_POOL_ADD_SIZE_* contributions) when the
+application has explicitly set CONFIG_HEAP_MEM_POOL_SIZE to zero and opted out of
+dynamic allocation.
+
+NOTE: This requirement is not currently met by the Zephyr implementation. The
+current HEAP_MEM_POOL_ADD_SIZE_* override mechanism silently increases the system
+heap to meet subsystem minimums even when the application has set
+CONFIG_HEAP_MEM_POOL_SIZE=0, unless CONFIG_HEAP_MEM_POOL_IGNORE_MIN is also
+set. There is no Kconfig warning or error that alerts the developer when a
+subsystem forces dynamic allocation to become available against the application's
+intent.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user who has explicitly prohibited dynamic allocation in my
+safety-critical application, I want the build to fail with a clear diagnostic if
+any enabled subsystem would silently re-enable dynamic allocation, so that the
+static-only memory model is enforced comprehensively rather than depending on
+developer awareness of HEAP_MEM_POOL_ADD_SIZE contributions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
 [TEXT]
 STATEMENT: >>>
 Resource Isolation
