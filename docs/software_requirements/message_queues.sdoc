@@ -1,0 +1,249 @@
+[DOCUMENT]
+TITLE: Message Queues
+PREFIX: ZEP-SRS-17-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[[SECTION]]
+TITLE: Message Queue Definition and Initialization
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Static message queue definition
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and initialize a message queue at
+compile time, specifying the message size and maximum number of queued messages.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to asynchronously pass fixed-size data items between threads
+and interrupt service routines using a bounded FIFO buffer.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Runtime message queue initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a message queue at run time
+using a caller-provided buffer, specifying the message size and maximum number of
+queued messages.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Heap-allocated message queue initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a message queue at run time
+by allocating the required buffer from the kernel heap, specifying the message size and
+maximum number of queued messages.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-11
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Message queue cleanup
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to release resources associated with a
+heap-allocated message queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Sending Messages
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Enqueue a message
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to add a message to the back of a message
+queue, blocking the calling thread if the queue is full until space becomes available
+or a timeout expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Enqueue a message at the front
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to add a message to the front of a message
+queue, making it the next item to be retrieved, without blocking.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Send timeout behavior
+STATEMENT: >>>
+When enqueuing a message times out because the queue remains full, the Zephyr RTOS
+shall return a timeout error code to the calling thread.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Receiving Messages
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-15
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Dequeue a message
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to remove the first message from a message
+queue and copy it to a caller-supplied buffer, blocking the calling thread if the queue
+is empty until a message arrives or a timeout expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Peek at the first message
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to copy the first message from a message
+queue into a caller-supplied buffer without removing it from the queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Peek at a message by index
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to copy a message at a specified index
+within a message queue into a caller-supplied buffer without removing it from the queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Receive timeout behaviour
+STATEMENT: >>>
+When dequeuing from an empty message queue times out, the Zephyr RTOS shall return a
+timeout error code to the calling thread.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Message Queue Inspection
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Query number of free slots
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the number of unused message slots
+remaining in a message queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-20
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Query number of queued messages
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the number of messages currently
+stored in a message queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-21
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Query message queue attributes
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to retrieve the static attributes of a
+message queue, including message size and maximum queue depth.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[REQUIREMENT]
+UID: ZEP-SRS-17-22
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Purge all messages
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to discard all messages currently stored in
+a message queue and unblock any threads waiting to send to the queue.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
+[[/SECTION]]
