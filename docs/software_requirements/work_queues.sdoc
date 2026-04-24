@@ -271,4 +271,62 @@ RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-33
 
+[REQUIREMENT]
+UID: ZEP-SRS-19-22
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Work Queues
+TITLE: Cancel work item and wait for completion
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to cancel a submitted work item and block
+until any in-progress execution of that item's handler has completed, ensuring the
+handler is not running when the call returns.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-33
+
+[REQUIREMENT]
+UID: ZEP-SRS-19-23
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Work Queues
+TITLE: Flush a delayable work item
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to block until a delayable work item that
+has been submitted to a work queue has finished executing its handler.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-33
+
+[REQUIREMENT]
+UID: ZEP-SRS-19-24
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Work Queues
+TITLE: Cancel delayable work item and wait for completion
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to cancel a scheduled or submitted delayable
+work item and block until any in-progress execution of that item's handler has completed.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-33
+
+[REQUIREMENT]
+UID: ZEP-SRS-19-25
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Work Queues
+TITLE: Stop a user work queue
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to stop a user-defined work queue, draining
+pending work items and terminating the work queue thread, optionally waiting for
+termination to complete before returning.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-33
+
 [[/SECTION]]
