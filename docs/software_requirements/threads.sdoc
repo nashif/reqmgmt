@@ -215,11 +215,70 @@ RELATIONS:
   VALUE: ZEP-SYRS-16
 
 [REQUIREMENT]
-UID: ZEP-SRS-1-14
+UID: ZEP-SRS-1-15
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Threads
-TITLE: Thread name
+TITLE: Static thread definition at compile time
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and statically create a thread,
+including its stack and initial parameters, at compile time without calling
+k_thread_create() at runtime.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Reading thread priority
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read the current numeric scheduling
+priority of a specified thread.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Getting the current thread identifier
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to retrieve the thread identifier of the
+currently executing thread.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Thread stack usage monitoring
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the unused stack space remaining
+for a specified thread, to support detection of stack overflow conditions.
+<<<
+USER_STORY: >>>
+As a safety-critical application developer, I need to monitor each thread's remaining
+stack space at runtime to detect and respond to stack overflow conditions before memory
+is corrupted.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
 STATEMENT: >>>
 The Zephyr RTOS shall provide an interface to assign and retrieve a human-readable
 name string for a thread, to aid in debugging and tracing.
