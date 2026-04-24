@@ -45,6 +45,9 @@ TITLE: Maximum limit of a semaphore
 STATEMENT: >>>
 The Zephyr RTOS shall define the maximum limit of a semaphore when the semaphore is used for counting purposes and does not have an explicit limit.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-14
 
 [REQUIREMENT]
 UID: ZEP-SRS-5-4
@@ -172,7 +175,7 @@ UID: ZEP-SRS-5-13
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Semaphore
-TITLE: Semaphore release
+TITLE: Semaphore count increment on release
 STATEMENT: >>>
 The Zephyr RTOS shall increment the semaphore's count upon release.
 <<<
@@ -185,7 +188,7 @@ UID: ZEP-SRS-5-14
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Semaphore
-TITLE: Semaphore release with priority inheritance
+TITLE: Highest-priority waiter unblocked on semaphore release
 STATEMENT: >>>
 When there are threads waiting on the semaphore, the highest-priority waiting thread
 shall be unblocked and acquire the semaphore.
