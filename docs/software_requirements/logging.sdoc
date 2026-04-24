@@ -15,26 +15,35 @@ UID: ZEP-SRS-11-1
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Logging
-TITLE: Dedicated Logging Thread Support
+TITLE: Dedicated logging thread support
 STATEMENT: >>>
 The Zephyr RTOS shall support isolation of logging from other functionality.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want to be able to configure logging of events so the execution of logging activities does have no or only a minimal impact to the timing behaviour of my application.
+As a Zephyr RTOS user I want to be able to configure logging of events so the
+execution of logging activities has no or only minimal impact on the timing
+behaviour of my application.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
 
 [REQUIREMENT]
 UID: ZEP-SRS-11-2
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Logging
-TITLE: Logs available for post processing
+TITLE: Logs available for post-processing
 STATEMENT: >>>
-The Zephyr RTOS logging shall produce logs that are capable of being post processed.
+The Zephyr RTOS logging shall produce logs that are capable of being post-processed.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want the logging information to be stored in a format which allows to be read possibly converted or displayed by COTS tools.
+As a Zephyr RTOS user I want the logging information to be stored in a format which
+allows it to be read, converted, or displayed by COTS tools.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
 
 [REQUIREMENT]
 UID: ZEP-SRS-11-3
@@ -46,44 +55,92 @@ STATEMENT: >>>
 The Zephyr RTOS logging shall support formatting of log messages to enable filtering.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want to be able my application to format texts (printf alike) into the log message.
+As a Zephyr RTOS user I want to be able to format text (printf-style) into log messages.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
 
 [REQUIREMENT]
 UID: ZEP-SRS-11-4
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Logging
-TITLE: Logging Filtering Support
+TITLE: Logging severity level filtering
 STATEMENT: >>>
 The Zephyr RTOS logging system shall support filtering based on severity level.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want to be able to distinguish between different severity level for my log messages (e.g. DEBUG, INFO, WARN, ERROR, PANIC).
+As a Zephyr RTOS user I want to be able to distinguish between different severity
+levels for my log messages (e.g. DEBUG, INFO, WARNING, ERROR, PANIC).
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
 
 [REQUIREMENT]
 UID: ZEP-SRS-11-5
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Logging
-TITLE: Multiple Backend Logging Support
+TITLE: Multiple backend logging support
 STATEMENT: >>>
 The Zephyr RTOS shall support logging messages to multiple system resources.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want to be able to simultaneously log to different channels which may store / redirect the information on / to different hardware (EEPROM, Flash, FRAM, UART, Ethernet, USB etc.).
+As a Zephyr RTOS user I want to be able to simultaneously log to different channels
+which may store or redirect information to different hardware (EEPROM, Flash, FRAM,
+UART, Ethernet, USB etc.).
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
 
 [REQUIREMENT]
 UID: ZEP-SRS-11-6
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Logging
-TITLE: Deferred Logging Support
+TITLE: Deferred logging support
 STATEMENT: >>>
-The Zephyr RTOS shall support deferred logging (TODO: need more detail about the constraints and limits on what can be deferred).
+The Zephyr RTOS shall support a deferred logging mode in which log message
+formatting and output to backends are performed outside the calling context,
+either in a dedicated logging thread or at a later processing step, so that
+the runtime cost imposed on the calling thread is limited to buffer copy
+operations only.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want a minimal influence of logging activities to the timing behaviour of my application. Time consuming logging threads shall be done in the background.
+As a Zephyr RTOS user I want minimal impact of logging on the timing behaviour
+of my application. Time-consuming logging output shall be performed in the
+background without blocking the thread that generated the log message.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-13
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Logging
+TITLE: Logging non-interference when disabled
+STATEMENT: >>>
+When the logging subsystem is disabled at compile time (CONFIG_LOG not set),
+or when a log statement's severity level is at or above the compile-time level
+threshold for its module, all LOG_ERR, LOG_WRN, LOG_INF, and LOG_DBG macro
+invocations shall expand to constant expressions (void)0 that produce no
+executable code and introduce zero runtime overhead to the calling context.
+
+The log level threshold check shall be resolved entirely at compile time so
+that filtered-out log statements leave no code, no stack usage, and no timing
+impact in the generated binary.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user targeting a safety-critical or resource-constrained system,
+I want log statements that are disabled (either globally or per-module at the
+configured severity threshold) to have zero runtime cost, so that adding LOG_DBG
+instrumentation to a release build does not affect timing or code size.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-8
