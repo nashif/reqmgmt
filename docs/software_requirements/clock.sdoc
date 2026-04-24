@@ -1,0 +1,273 @@
+[DOCUMENT]
+TITLE: Kernel Clock and Timing
+PREFIX: ZEP-SRS-10-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[[SECTION]]
+TITLE: System Tick and Uptime
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-7
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Configurable system tick frequency
+STATEMENT: >>>
+The Zephyr RTOS shall support a configurable system tick frequency that determines the
+resolution of kernel time-based services.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to configure the system tick rate to match the timing
+requirements of my application.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: System uptime in milliseconds
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read the elapsed time since system startup
+in milliseconds.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to query the current system uptime in milliseconds in order
+to implement time-based logic in my application.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: 32-bit system uptime interface
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read the lower 32 bits of the elapsed time
+since system startup in milliseconds.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Uptime delta calculation
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to calculate the elapsed time in milliseconds
+between a reference time and the current uptime.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Hardware Cycle Counter
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-11
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: 32-bit hardware cycle counter
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read the current value of the hardware
+cycle counter as a 32-bit value.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a high-resolution hardware counter for measuring short
+durations with sub-millisecond precision.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: 64-bit hardware cycle counter
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read the current value of the hardware
+cycle counter as a 64-bit value when supported by the hardware.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Thread Sleep and Delay
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Thread sleep for a timeout duration
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to put the current thread into a sleeping
+state for a specified timeout duration, yielding the CPU to other threads.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want my thread to be able to sleep for a specified duration
+and be automatically woken up when the duration expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Thread sleep in milliseconds
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to put the current thread into a sleeping
+state for a specified number of milliseconds.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-15
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Thread sleep in microseconds
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to put the current thread into a sleeping
+state for a specified number of microseconds.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Busy-wait delay
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to spin-wait for a specified number of
+microseconds without yielding the CPU.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a busy-wait function for short, precise delays where
+blocking the thread is not acceptable (e.g. within an ISR or critical section).
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Waking a sleeping thread early
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to wake a sleeping thread before its sleep
+timeout expires and return the remaining sleep time to the caller.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Timeout Specification
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: No-wait timeout constant
+STATEMENT: >>>
+The Zephyr RTOS shall provide a timeout constant that specifies a zero-duration wait,
+causing the calling interface to return immediately if the requested resource or condition
+is not available.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Wait-forever timeout constant
+STATEMENT: >>>
+The Zephyr RTOS shall provide a timeout constant that specifies an indefinite wait,
+causing the calling interface to block until the resource or condition becomes available.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-20
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Timeout specified in milliseconds
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to specify a timeout value in milliseconds.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-21
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Timeout specified in microseconds
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to specify a timeout value in microseconds.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[REQUIREMENT]
+UID: ZEP-SRS-10-22
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Timeout specified in system ticks
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to specify a timeout value in system ticks.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
+[[/SECTION]]
