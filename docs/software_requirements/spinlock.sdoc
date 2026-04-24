@@ -78,7 +78,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: ZEP-SRS-11-11
 STATUS: Draft
-TYPE: Non-Functional
+TYPE: Functional
 COMPONENT: Spinlocks
 TITLE: Spinlock nesting order
 STATEMENT: >>>
@@ -92,7 +92,7 @@ RELATIONS:
 [REQUIREMENT]
 UID: ZEP-SRS-11-12
 STATUS: Draft
-TYPE: Non-Functional
+TYPE: Functional
 COMPONENT: Spinlocks
 TITLE: Spinlock usable in ISR context
 STATEMENT: >>>
