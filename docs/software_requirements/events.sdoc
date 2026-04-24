@@ -1,0 +1,177 @@
+[DOCUMENT]
+TITLE: Event Objects
+PREFIX: ZEP-SRS-14-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-3
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Static event object definition
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and initialize an event object at
+compile time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to signal multiple threads simultaneously using a bitmask
+of independent event flags without requiring one synchronization object per flag.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-4
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Dynamic event object initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to initialize an event object at run time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-5
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Posting events
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to set a set of event bits in an event object
+by ORing the specified bits into the current event bitmask, waking threads waiting for
+any of those bits.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Setting events
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to replace the entire event bitmask of an
+event object with a new value, waking threads whose wait conditions are satisfied by
+the new value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-7
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Masked event update
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to update a subset of event bits in an event
+object, preserving bits not covered by a provided mask.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Clearing events
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically clear a specified set of event
+bits in an event object.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Wait for any event bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to block the calling thread until at least
+one of a specified set of event bits is set in an event object, or until a timeout
+expires.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want my thread to sleep until any one of a group of asynchronous
+conditions has been signalled.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Wait for all event bits
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to block the calling thread until all of a
+specified set of event bits are simultaneously set in an event object, or until a timeout
+expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-11
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Event timeout behaviour
+STATEMENT: >>>
+When an event wait operation times out before the requested condition is met, the
+Zephyr RTOS shall return a zero value to indicate that no matching events were received.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Non-blocking event test
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to test whether any of a specified set of
+event bits is currently set in an event object without blocking.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Automatic event bit clearing on receipt
+STATEMENT: >>>
+The Zephyr RTOS shall support optionally clearing the received event bits in an event
+object when a thread successfully obtains them, so that each event is consumed by
+exactly one waiter.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-30
