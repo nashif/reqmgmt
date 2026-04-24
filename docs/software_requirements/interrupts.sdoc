@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: Interrupts
-REQ_PREFIX: ZEP-SRS-7-
+PREFIX: ZEP-SRS-7-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: software_requirements.sgra
@@ -102,7 +102,7 @@ TYPE: Functional
 COMPONENT: Interrupts
 TITLE: Uninstalling dynamic IRQ service routines (ISR).
 STATEMENT: >>>
-Zephyr RTOS shall provide a mechanism to uninstall a dynamic ISR. 
+Zephyr RTOS shall provide a mechanism to uninstall a dynamic ISR.
 <<<
 RELATIONS:
 - TYPE: Parent

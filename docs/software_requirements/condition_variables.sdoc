@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: Condition Variables
-REQ_PREFIX: ZEP-SRS-21-
+PREFIX: ZEP-SRS-21-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: software_requirements.sgra
