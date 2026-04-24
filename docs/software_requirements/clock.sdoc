@@ -270,4 +270,25 @@ RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-27
 
+[REQUIREMENT]
+UID: ZEP-SRS-10-23
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Absolute timeout specification
+STATEMENT: >>>
+The Zephyr RTOS shall provide mechanisms to specify a timeout as an absolute deadline
+expressed in system ticks, milliseconds, seconds, microseconds, nanoseconds, or hardware
+cycles, such that the timeout expires at the specified absolute time rather than after a
+relative delay.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user implementing periodic or deadline-driven tasks, I need to specify
+timeouts as absolute deadlines (K_TIMEOUT_ABS_TICKS, K_TIMEOUT_ABS_MS, etc.) to avoid
+drift introduced by relative timeout accumulation across repeated sleep or wait calls.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-27
+
 [[/SECTION]]
