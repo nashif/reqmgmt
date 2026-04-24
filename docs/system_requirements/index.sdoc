@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: Zephyr System Requirements
-REQ_PREFIX: ZEP-SYRS-
+PREFIX: ZEP-SYRS-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: system_requirements.sgra
@@ -365,6 +365,170 @@ COMPONENT: Mailboxes
 TITLE: Mailboxes
 STATEMENT: >>>
 The Zephyr RTOS shall provide a framework to pass messages of arbitrary size between threads.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: System Initialization
+
+[REQUIREMENT]
+UID: ZEP-SYRS-26
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Ordered system startup sequence
+STATEMENT: >>>
+The Zephyr RTOS shall execute a defined sequence of initialization phases during system
+startup before transferring control to the application.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a predictable boot sequence with well-defined phases so that
+drivers and subsystems are initialized in the correct order.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Kernel Clock and Timing
+
+[REQUIREMENT]
+UID: ZEP-SYRS-27
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Clock and Timing
+TITLE: Kernel timing and sleep services
+STATEMENT: >>>
+The Zephyr RTOS shall provide interfaces for reading system time, putting threads to
+sleep for specified durations, and specifying timeout values for kernel services.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to delay execution, measure elapsed time and express
+timeouts in a portable, hardware-independent way.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Spinlocks
+
+[REQUIREMENT]
+UID: ZEP-SYRS-28
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock synchronization primitive
+STATEMENT: >>>
+The Zephyr RTOS shall provide a spinlock primitive for mutual exclusion between threads
+and interrupt service routines, disabling interrupts on the local CPU while held.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a low-level, IRQ-safe mutual exclusion mechanism for
+protecting short critical sections that may be accessed from both thread and ISR context.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Atomic Operations
+
+[REQUIREMENT]
+UID: ZEP-SYRS-29
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic variable operations
+STATEMENT: >>>
+The Zephyr RTOS shall provide a set of operations for reading, writing and modifying
+integer variables atomically without requiring explicit locking.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to share integer counters and flags between threads and ISRs
+without the overhead of a mutex or spinlock.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Event Objects
+
+[REQUIREMENT]
+UID: ZEP-SYRS-30
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Event Objects
+TITLE: Event object synchronization primitive
+STATEMENT: >>>
+The Zephyr RTOS shall provide an event object primitive that allows threads to wait on
+one or more event bits and allows other threads or ISRs to set or clear those bits.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to signal multiple independent conditions with a single
+kernel object and have threads wake up when any or all of the conditions they care about
+are satisfied.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Message Queues
+
+[REQUIREMENT]
+UID: ZEP-SYRS-31
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Fixed-size message queue primitive
+STATEMENT: >>>
+The Zephyr RTOS shall provide a message queue primitive that allows threads and interrupt
+service routines to exchange fixed-size data items through a bounded FIFO buffer with
+blocking send and receive semantics.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to pass fixed-size data safely between an ISR and a thread,
+or between two threads, without manual buffer management.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Pipes
+
+[REQUIREMENT]
+UID: ZEP-SYRS-32
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Byte-stream pipe primitive
+STATEMENT: >>>
+The Zephyr RTOS shall provide a pipe primitive that allows a thread to write a stream of
+bytes into a bounded ring buffer and another thread to read from it, with blocking
+semantics and timeout support.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to pass an unstructured byte stream between threads using
+a producer-consumer model with a configurable internal buffer.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Work Queues
+
+[REQUIREMENT]
+UID: ZEP-SYRS-33
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Work Queues
+TITLE: Work queue execution framework
+STATEMENT: >>>
+The Zephyr RTOS shall provide a work queue framework that allows deferred execution of
+handler functions in a thread context, supporting both immediate and time-delayed
+submission.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to defer work from an ISR or a high-priority thread to a
+lower-priority thread context without creating a dedicated thread for each deferred task.
 <<<
 
 [[/SECTION]]
