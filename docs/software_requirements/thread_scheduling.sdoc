@@ -195,4 +195,25 @@ RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-17
 
+[REQUIREMENT]
+UID: ZEP-SRS-2-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Thread Scheduling
+TITLE: Scheduler lock
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to temporarily prevent the scheduler from
+preempting the current thread, creating a cooperative scheduling window, and to
+subsequently unlock the scheduler and re-enable preemption.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user, I want to lock the scheduler to protect a short critical section
+from preemption without the overhead of disabling interrupts.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
+
 [[/SECTION]]
