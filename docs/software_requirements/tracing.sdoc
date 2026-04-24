@@ -17,8 +17,11 @@ TYPE: Functional
 COMPONENT: Tracing
 TITLE: Initializing a trace
 STATEMENT: >>>
-Zephyr shall provide an interface to initialize a trace.
+The Zephyr RTOS shall provide an interface to initialize a trace.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
 
 [REQUIREMENT]
 UID: ZEP-SRS-10-2
@@ -27,8 +30,11 @@ TYPE: Functional
 COMPONENT: Tracing
 TITLE: Triggering a trace
 STATEMENT: >>>
-Zephyr shall provide an interface to trigger a trace.
+The Zephyr RTOS shall provide an interface to trigger a trace.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
 
 [REQUIREMENT]
 UID: ZEP-SRS-10-3
@@ -37,8 +43,11 @@ TYPE: Functional
 COMPONENT: Tracing
 TITLE: Dumping trace results
 STATEMENT: >>>
-Zephyr shall provide an interface to dump results from a trace.
+The Zephyr RTOS shall provide an interface to dump results from a trace.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
 
 [REQUIREMENT]
 UID: ZEP-SRS-10-4
@@ -47,31 +56,51 @@ TYPE: Functional
 COMPONENT: Tracing
 TITLE: Removing trace data
 STATEMENT: >>>
-Zephyr shall provide an interface to remove trace data.
+The Zephyr RTOS shall provide an interface to remove trace data.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
 
 [REQUIREMENT]
 UID: ZEP-SRS-10-5
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Tracing
-TITLE: Tracing Object  Identification
+TITLE: Tracing object identification
 STATEMENT: >>>
-Zephyr shall provide an interface to identify the objects being traced.
+The Zephyr RTOS shall provide an interface to identify the objects being traced.
 <<<
 USER_STORY: >>>
-As a Zepyhr OS user, I want to be able to give each object which I create a name / label in order to be able to identify them in a trace log.
+As a Zephyr RTOS user, I want to be able to give each object which I create a name
+or label in order to be able to identify them in a trace log.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
 
 [REQUIREMENT]
 UID: ZEP-SRS-10-6
 STATUS: Draft
-TYPE: Functional
+TYPE: Non-Functional
 COMPONENT: Tracing
-TITLE: Tracing Non-Interference
+TITLE: Tracing non-interference
 STATEMENT: >>>
-Zepyhr shall prevent the tracing functionality from interfering with normal operations.
+When the tracing subsystem is disabled at compile time (CONFIG_TRACING not set),
+all tracing hook macros (SYS_PORT_TRACING_FUNC, SYS_PORT_TRACING_OBJ_FUNC, and
+all their variants) shall expand to empty statements that produce no executable
+code, introducing zero runtime overhead to the instrumented kernel operations.
+
+When the tracing subsystem is enabled, tracing hooks shall be purely observing:
+they must not alter the execution path, return values, timing, or any observable
+behavior of the kernel operation being traced.
 <<<
 USER_STORY: >>>
-As a Zepyhr OS user, I want that the trace functionality do not interfere or slow down the operation system functionality.
+As a Zephyr RTOS user targeting a safety-critical or resource-constrained system,
+I want the tracing functionality to have zero impact on the behavior and timing
+of the system when tracing is disabled, and to be a non-intrusive observer that
+does not change kernel behavior when tracing is enabled.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-19
