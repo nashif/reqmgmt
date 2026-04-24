@@ -15,23 +15,90 @@ UID: ZEP-SRS-9-1
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Memory Objects
-TITLE: Dynamic Memory Allocation
+TITLE: Heap memory allocation
 STATEMENT: >>>
-The Zephyr RTOS shall allow threads to dynamically allocate variable-sized memory regions from a specified range of memory.
+The Zephyr RTOS shall provide an interface to allocate a variable-sized block of memory
+from a heap object at runtime.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want my application to be able to dynamically allocate memory of a application defined size.
+As a Zephyr RTOS user, I want my application to be able to dynamically allocate memory
+of an application-defined size from a named heap region.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
 
 [REQUIREMENT]
 UID: ZEP-SRS-9-2
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Memory Objects
-TITLE: Memory Slab Object
+TITLE: Heap memory deallocation
 STATEMENT: >>>
-The Zephyr RTOS shall allow threads to dynamically allocate fixed-sized memory regions from a specified range of memory.
+The Zephyr RTOS shall provide an interface to release a previously allocated variable-sized
+memory block back to its heap object.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-3
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab allocation
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to allocate a fixed-sized memory block from a
+memory slab object, blocking the calling thread until a block is available or the specified
+timeout expires.
 <<<
 USER_STORY: >>>
-As a Zephyr RTOS user I want a most efficient and least fragmentation prone dynamic memory allocation mechanism.
+As a Zephyr RTOS user, I want a deterministic, fragmentation-free memory allocation mechanism
+that allocates fixed-size blocks with bounded allocation time.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-4
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab deallocation
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to release a fixed-sized memory block back to
+the memory slab from which it was allocated.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-5
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab free block count query
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the number of unused (free) blocks
+remaining in a memory slab.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab used block count query
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the number of allocated (in-use) blocks
+in a memory slab.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
