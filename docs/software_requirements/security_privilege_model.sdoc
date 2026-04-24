@@ -1,0 +1,524 @@
+[DOCUMENT]
+TITLE: Security and Privilege Model
+PREFIX: ZEP-SRS-43-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[TEXT]
+STATEMENT: >>>
+This document covers the security and privilege model of the Zephyr RTOS. The
+requirements address five areas: the two-level privilege model (supervisor vs user
+mode), kernel object permission management, hardware-backed trust isolation
+(ARM TrustZone / TF-M), cryptographic services, and verified boot integrity.
+
+STATUS convention: Active means the requirement is satisfied by the current Zephyr
+implementation. Draft means the requirement identifies a gap not yet addressed in
+Zephyr and is recorded here so that future work can be tracked against it.
+<<<
+
+[TEXT]
+STATEMENT: >>>
+Supervisor and User Mode Privilege Separation
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-1
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Two-level hardware privilege model
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, the Zephyr RTOS shall enforce a two-level
+hardware privilege model in which supervisor-mode threads have full access to
+kernel data structures and hardware resources, while user-mode threads execute
+at a reduced hardware privilege level that prohibits direct access to
+privileged CPU instructions and memory regions outside the thread's assigned
+partitions.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want kernel code and application code to run at
+different hardware privilege levels so that a bug in application code cannot
+directly corrupt kernel state or escalate its own privileges.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-2
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Irreversible privilege demotion at thread entry
+STATEMENT: >>>
+The Zephyr RTOS shall provide k_thread_user_mode_enter() as a one-way
+transition that drops the calling supervisor thread to user mode before
+invoking the supplied entry function, preserving existing memory domain
+membership, kernel object permissions, and thread priority. Once entered,
+user mode cannot be exited by the thread itself.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a clean privilege-drop point so that I can
+perform all supervisor-only initialisation in kernel mode and then permanently
+restrict a thread to user mode for the remainder of its lifetime, ensuring it
+cannot re-acquire supervisor privileges.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-3
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: System call gate as the sole privilege escalation path
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, the Zephyr RTOS shall provide a system call
+gate as the only mechanism by which user-mode threads may invoke
+kernel-provided services, such that every transition from user mode to
+supervisor mode passes through an architecture-specific trap instruction
+followed by validated argument checking in the corresponding
+z_vrfy_<call>() handler before any privileged operation is performed.
+Direct invocation of kernel implementation functions from user mode shall
+be prohibited.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want all privilege transitions to be funnelled through
+a single auditable gate so that there is no path by which user-mode code can
+bypass argument validation and directly call kernel internals.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-4
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: User thread prevention from creating higher-priority threads
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, the Zephyr RTOS shall prevent a user-mode
+thread from creating a new thread with a priority higher than the calling
+thread's own priority, so that user-mode code cannot use thread creation as a
+privilege escalation vector.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want user-mode threads to be unable to create threads
+that outrank their own scheduling priority so that a compromised user thread
+cannot starve higher-priority system threads by spawning a flood of
+high-priority threads.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-5
+STATUS: Active
+TYPE: Non-Functional
+COMPONENT: Security and Privilege Model
+TITLE: Spectre variant 1 bounds-check bypass mitigation
+STATEMENT: >>>
+When CONFIG_BOUNDS_CHECK_BYPASS_MITIGATION is enabled, the Zephyr RTOS shall
+insert memory barrier or speculation fence instructions after every array
+index bounds check that operates on values supplied by user-mode threads,
+preventing speculative out-of-bounds memory reads from leaking kernel data
+through side channels.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user deploying on hardware subject to speculative execution
+side-channel attacks, I want system calls that handle user-supplied indices or
+offsets to include speculation barriers so that a Spectre variant 1 attack
+cannot exfiltrate kernel memory through a timing side channel.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-6
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Security and Privilege Model
+TITLE: Privilege separation on architectures without MMU or MPU
+STATEMENT: >>>
+The Zephyr RTOS shall provide a documented, architecture-neutral mechanism to
+enforce software-based privilege separation between application components on
+targets that lack hardware MMU or MPU support, or shall explicitly document
+that privilege separation is not achievable on such targets and identify the
+resulting security implications.
+
+NOTE: This requirement is not currently met by the Zephyr implementation.
+On targets that lack ARCH_HAS_USERSPACE (no MPU, no MMU), CONFIG_USERSPACE
+cannot be enabled and there is no privilege boundary of any kind between
+threads. All threads execute with full access to all memory and peripherals.
+This is a known architectural gap for low-end microcontrollers that cannot
+provide hardware-enforced privilege separation.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user targeting a Cortex-M0 or similar MPU-less device, I
+need to know whether any privilege separation mechanism exists and, if not,
+what compensating controls are required to meet a safety or security
+assurance target.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[TEXT]
+STATEMENT: >>>
+Kernel Object Permission Management
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-7
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Per-thread kernel object access control
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, the Zephyr RTOS shall maintain an
+access-control table that records, for each kernel object, which threads have
+been granted permission to use it. A user-mode thread shall be denied access
+to any kernel object for which it has not been explicitly granted permission,
+and any attempt to use an unpermitted object shall cause the calling thread to
+be terminated.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want each user thread to be able to access only the
+kernel objects that have been explicitly granted to it so that a compromised
+thread cannot manipulate synchronisation primitives, timers, or memory regions
+that belong to other components.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-8
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Runtime grant and revocation of kernel object permissions
+STATEMENT: >>>
+The Zephyr RTOS shall provide APIs to grant (k_object_access_grant), revoke
+(k_object_access_revoke), and revoke-for-all-but-self
+(k_object_access_revoke_others) thread permissions on kernel objects at
+runtime. User-mode threads shall only be permitted to revoke their own
+access; granting and global-revocation shall be supervisor-mode-only
+operations.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to be able to add and remove thread permissions
+on kernel objects at runtime so that an object can be handed off between
+components with a well-defined transfer of ownership, and so that a thread
+that no longer needs access to an object can have that access withdrawn.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[TEXT]
+STATEMENT: >>>
+Hardware Trust Isolation (ARM TrustZone and TF-M)
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-9
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Trusted Execution Secure and Non-Secure firmware image support
+STATEMENT: >>>
+On ARMv8-M and ARMv8-A platforms that implement the TrustZone Security
+Extension, the Zephyr RTOS shall support building the application either as a
+Secure firmware image (CONFIG_TRUSTED_EXECUTION_SECURE) with access to all
+Secure and Non-Secure resources, or as a Non-Secure firmware image
+(CONFIG_TRUSTED_EXECUTION_NONSECURE) that is prohibited from accessing any
+resource configured as belonging to the Secure domain.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user on an ARMv8-M platform I want to partition my system
+into Secure and Non-Secure worlds at the hardware level so that the Secure
+partition (containing keys, attestation, and crypto) is hardware-isolated from
+the Non-Secure application partition even if the Non-Secure software is
+entirely compromised.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-10
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Trusted Firmware-M integration as Secure Processing Environment
+STATEMENT: >>>
+When CONFIG_BUILD_WITH_TFM is enabled, the Zephyr RTOS build system shall
+produce a combined image in which Trusted Firmware-M (TF-M) executes in the
+Secure Processing Environment (SPE) and Zephyr executes in the Non-Secure
+Processing Environment (NSPE). The NSPE application shall access all Secure
+services exclusively through the PSA Certified API, with TF-M enforcing
+Secure/Non-Secure isolation at the hardware level.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user targeting an ARMv8-M platform for PSA certification, I
+want TF-M to manage all Secure resources so that the Non-Secure Zephyr
+application cannot directly access cryptographic keys, protected storage, or
+attestation tokens, regardless of bugs in the application code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-11
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: TF-M Internal Trusted Storage secure partition
+STATEMENT: >>>
+When CONFIG_TFM_PARTITION_INTERNAL_TRUSTED_STORAGE is enabled, the Zephyr
+RTOS shall provide access, through the PSA Internal Trusted Storage API, to a
+Secure partition that stores assets in internal flash with confidentiality and
+integrity protection enforced by TF-M, inaccessible to the Non-Secure world
+without going through the PSA API.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want cryptographic keys, device certificates, and
+other security-sensitive assets stored in a Secure partition that cannot be
+read or modified directly by Non-Secure application code, so that asset
+compromise requires physical access or an exploit of the Secure partition
+itself.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-12
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: TF-M Initial Attestation secure partition
+STATEMENT: >>>
+When CONFIG_TFM_PARTITION_INITIAL_ATTESTATION is enabled, the Zephyr RTOS
+shall provide access to a Secure partition that generates a PSA attestation
+token containing platform claims signed with the device's attestation private
+key, allowing a remote party to verify the device's identity and software
+state without the attestation key ever leaving the Secure partition.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user deploying IoT devices, I want to be able to produce a
+cryptographically signed attestation of the device's firmware state so that a
+server can confirm it is communicating with a genuine, uncompromised device
+running a known firmware version.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Hardware trust isolation on non-ARM architectures
+STATEMENT: >>>
+The Zephyr RTOS shall provide an equivalent hardware-backed trust isolation
+mechanism — analogous to ARM TrustZone — on non-ARM architectures that offer
+hardware privilege partitioning (such as RISC-V Physical Memory Protection
+with M/U/S mode separation or x86 SMM), allowing a Secure enclave or
+high-privilege partition to be isolated from the main application firmware.
+
+NOTE: This requirement is not fully met by the current Zephyr implementation.
+TF-M integration is limited to ARM TrustZone M platforms. RISC-V PMP-based
+privilege separation supports U-mode isolation (via CONFIG_USERSPACE) but
+there is no equivalent of a TF-M Secure Processing Environment for RISC-V,
+MIPS, or x86. Secure enclave or high-privilege partition support on non-ARM
+targets is absent.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user deploying on a RISC-V or other non-ARM target in a
+security-sensitive application, I want a hardware-isolated partition for
+managing keys and secure services with the same assurance guarantees as
+TF-M on ARM, so that my security architecture is not dependent on the
+choice of CPU architecture.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[TEXT]
+STATEMENT: >>>
+Cryptographic Services
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-14
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: PSA Crypto API for cryptographic operations
+STATEMENT: >>>
+When CONFIG_PSA_CRYPTO is enabled, the Zephyr RTOS shall expose the PSA
+Certified Crypto API to the application, backed either by Mbed TLS
+(CONFIG_PSA_CRYPTO_PROVIDER_MBEDTLS) or by the TF-M Crypto secure partition
+(CONFIG_PSA_CRYPTO_PROVIDER_TFM), providing key management, symmetric and
+asymmetric encryption, message authentication, hashing, and key derivation
+through a unified, provider-independent interface.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a standardised cryptographic API whose
+implementation can be swapped between a software library and a hardware secure
+element without changing application code, so that I can meet performance and
+security requirements on different platforms without API fragmentation.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-15
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Hardware entropy source driver API
+STATEMENT: >>>
+When CONFIG_ENTROPY_GENERATOR is enabled, the Zephyr RTOS shall provide a
+driver API for hardware entropy sources (TRNG or equivalent), allowing the
+application and kernel subsystems (such as stack canaries and address space
+layout randomisation) to obtain cryptographically unpredictable random bytes
+from the hardware without relying on a software pseudo-random generator.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want all security-sensitive random values (key
+material, nonces, canary seeds) to be derived from a hardware entropy source
+so that their unpredictability does not depend on software state that an
+attacker may be able to observe or predict.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-16
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Security and Privilege Model
+TITLE: Crypto algorithm selection restricted to approved algorithms
+STATEMENT: >>>
+The Zephyr RTOS build system shall provide a configuration mechanism to
+restrict the set of cryptographic algorithms available to the application to a
+list of approved algorithms (such as those mandated by FIPS 140-3, NIST SP
+800-131A, or a project-specific policy), and shall produce a build-time error
+if an unapproved algorithm is requested.
+
+NOTE: This requirement is not currently met by the Zephyr implementation.
+CONFIG_PSA_CRYPTO exposes all algorithms supported by the chosen backend;
+there is no build-time mechanism to prohibit use of deprecated or weak
+algorithms (such as MD5, SHA-1, DES, or RC4) at the Zephyr Kconfig level.
+Algorithm restrictions must currently be enforced through manual Mbed TLS
+configuration files or out-of-tree policy tools.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a product that must meet a cryptographic
+algorithm policy (e.g. FIPS 140-3 or ETSI TS 103 523), I want the build
+system to enforce that no deprecated or weak algorithm can be compiled in, so
+that algorithm policy compliance is guaranteed by the build rather than by
+code review.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[TEXT]
+STATEMENT: >>>
+Verified Boot Integrity
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-17
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: MCUboot cryptographic image signature verification
+STATEMENT: >>>
+When CONFIG_BOOTLOADER_MCUBOOT is enabled, the Zephyr RTOS application image
+shall be signed with a private key whose corresponding public key is embedded
+in the MCUboot bootloader, and MCUboot shall verify the image signature before
+transferring execution to the Zephyr image, so that only images signed by a
+trusted key are executed.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want the bootloader to refuse to execute any image
+that was not signed by a trusted key so that a hardware or network attacker
+cannot replace the firmware with arbitrary code without possessing the signing
+key.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-18
+STATUS: Active
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Secure firmware update with rollback protection via MCUboot
+STATEMENT: >>>
+When CONFIG_BOOTLOADER_MCUBOOT is enabled and a swap-based update mode is
+configured, MCUboot shall support installing a new firmware image only if it
+passes signature verification, and shall provide a mechanism to prevent
+downgrade to an earlier image version by means of a monotonic version counter
+or equivalent rollback-protection mechanism.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user managing deployed devices over the air, I want the
+bootloader to prevent installation of an older (potentially vulnerable)
+firmware version even if an attacker has obtained a valid signature for that
+older version, so that a rollback attack cannot re-introduce patched
+vulnerabilities.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
+UID: ZEP-SRS-43-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Runtime measurement and attestation of loaded firmware image
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to compute and report a
+cryptographic measurement (hash) of the loaded firmware image and its
+configuration at runtime, and shall expose this measurement through a
+standardised interface (such as the PSA Attestation API) so that a remote
+verifier can confirm that the expected firmware is executing.
+
+NOTE: This requirement is partially met by the current Zephyr implementation.
+TF-M Initial Attestation (CONFIG_TFM_PARTITION_INITIAL_ATTESTATION) provides
+a signed attestation token on ARM TrustZone platforms. However, there is no
+equivalent runtime measurement or attestation mechanism for non-TF-M or
+non-ARM platforms. Measurement of Zephyr image integrity at runtime without
+TF-M is not provided.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user deploying a safety-critical or security-sensitive
+system, I want the device to be able to prove to a remote authority that it is
+running the expected firmware without modification, so that tampered or
+substituted devices are detected before they are trusted.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36

@@ -108,3 +108,6 @@ FILE: poll.sdoc
 
 [DOCUMENT_FROM_FILE]
 FILE: freedom_from_interference.sdoc
+
+[DOCUMENT_FROM_FILE]
+FILE: security_privilege_model.sdoc

@@ -578,3 +578,31 @@ safety standards.
 <<<
 
 [[/SECTION]]
+
+[[SECTION]]
+TITLE: Security and Privilege Model
+
+[REQUIREMENT]
+UID: ZEP-SYRS-36
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Security and Privilege Model
+TITLE: Security and privilege model
+STATEMENT: >>>
+The Zephyr RTOS shall provide a hardware-enforced security and privilege model
+encompassing: a two-level supervisor/user privilege separation with a system call
+gate as the sole escalation path; runtime kernel object permission management; hardware
+trust isolation via ARM TrustZone and Trusted Firmware-M on supported platforms;
+standardised cryptographic services through the PSA Crypto API; hardware entropy
+sourcing; and cryptographically verified boot integrity via MCUboot.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a security-sensitive or safety-certified system, I want
+the kernel to enforce privilege boundaries, control access to kernel objects, protect
+security-sensitive assets in hardware-isolated partitions, provide auditable
+cryptographic services, and guarantee that only authenticated firmware executes, so that
+the system meets the security requirements of PSA Certified, IEC 62443, or equivalent
+standards.
+<<<
+
+[[/SECTION]]
