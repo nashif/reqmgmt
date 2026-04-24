@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: Kernel Clock and Timing
-PREFIX: ZEP-SRS-10-
+PREFIX: ZEP-SRS-35-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: software_requirements.sgra
@@ -14,7 +14,7 @@ SPDX-License-Identifier: Apache-2.0
 TITLE: System Tick and Uptime
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-7
+UID: ZEP-SRS-35-1
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -32,7 +32,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-8
+UID: ZEP-SRS-35-2
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -50,7 +50,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-9
+UID: ZEP-SRS-35-3
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -64,7 +64,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-10
+UID: ZEP-SRS-35-4
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -83,7 +83,7 @@ RELATIONS:
 TITLE: Hardware Cycle Counter
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-11
+UID: ZEP-SRS-35-5
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -101,7 +101,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-12
+UID: ZEP-SRS-35-6
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -120,7 +120,7 @@ RELATIONS:
 TITLE: Thread Sleep and Delay
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-13
+UID: ZEP-SRS-35-7
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -138,7 +138,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-14
+UID: ZEP-SRS-35-8
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -152,7 +152,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-15
+UID: ZEP-SRS-35-9
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -166,7 +166,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-16
+UID: ZEP-SRS-35-10
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -184,7 +184,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-17
+UID: ZEP-SRS-35-11
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -203,7 +203,7 @@ RELATIONS:
 TITLE: Timeout Specification
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-18
+UID: ZEP-SRS-35-12
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -218,7 +218,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-19
+UID: ZEP-SRS-35-13
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -232,7 +232,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-20
+UID: ZEP-SRS-35-14
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -245,7 +245,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-21
+UID: ZEP-SRS-35-15
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -258,7 +258,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-22
+UID: ZEP-SRS-35-16
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
@@ -271,7 +271,7 @@ RELATIONS:
   VALUE: ZEP-SYRS-27
 
 [REQUIREMENT]
-UID: ZEP-SRS-10-23
+UID: ZEP-SRS-35-17
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Kernel Clock and Timing
