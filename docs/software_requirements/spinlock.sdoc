@@ -1,0 +1,104 @@
+[DOCUMENT]
+TITLE: Spinlocks
+PREFIX: ZEP-SRS-11-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-7
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock static definition
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and initialize a spinlock object
+at compile time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a low-level mutual exclusion primitive that can be used in
+both thread and interrupt contexts to protect shared data.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock acquisition
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to acquire a spinlock that disables IRQs on
+the current CPU and returns a key representing the IRQ state prior to locking, blocking
+until the lock is available.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to enter a critical section that is safe against both
+concurrent threads and interrupt handlers.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock try-acquire
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to attempt to acquire a spinlock without
+blocking, returning a failure indication when the lock is not immediately available.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock release
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to release a previously acquired spinlock and
+restore the IRQ state to the value captured at acquisition time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-11
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock nesting order
+STATEMENT: >>>
+Spinlocks shall be properly nested: each release shall correspond to the most recent
+acquisition on the same CPU, using the key returned by that acquisition.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
+
+[REQUIREMENT]
+UID: ZEP-SRS-11-12
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Spinlocks
+TITLE: Spinlock usable in ISR context
+STATEMENT: >>>
+Spinlock acquisition and release interfaces shall be usable from interrupt service
+routine context.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-28
