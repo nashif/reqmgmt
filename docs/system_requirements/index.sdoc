@@ -552,3 +552,29 @@ queues, signals) in a single blocking call rather than polling each object indiv
 <<<
 
 [[/SECTION]]
+
+[[SECTION]]
+TITLE: Freedom from Interference
+
+[REQUIREMENT]
+UID: ZEP-SYRS-35
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Freedom from interference between software components
+STATEMENT: >>>
+The Zephyr RTOS shall provide mechanisms to prevent unintended interference between
+concurrently executing software components, encompassing spatial isolation (memory
+partitioning), stack integrity (overflow detection and containment), temporal isolation
+(CPU time observability and budget enforcement), and fault containment (localization of
+faults to the component that caused them).
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user developing a mixed-criticality or safety-certified system, I want
+the kernel to guarantee that a fault, resource overuse, or memory error in one software
+component cannot compromise the correct execution of another component, so that I can
+demonstrate component independence as required by IEC 61508, ISO 26262, or equivalent
+safety standards.
+<<<
+
+[[/SECTION]]

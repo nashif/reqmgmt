@@ -1,0 +1,448 @@
+[DOCUMENT]
+TITLE: Freedom from Interference
+PREFIX: ZEP-SRS-42-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[TEXT]
+STATEMENT: >>>
+Freedom from Interference (FFI) is the property that a fault or misbehaviour in one
+software component cannot compromise the correct execution of another. Requirements in
+this document cover four aspects: spatial isolation (memory), stack integrity, temporal
+isolation (CPU time), and fault containment.
+
+STATUS convention: Active means the requirement is satisfied by the current Zephyr
+implementation. Draft means the requirement identifies a gap not yet addressed in
+Zephyr and is recorded here so that future work can be tracked against it.
+<<<
+
+[TEXT]
+STATEMENT: >>>
+Spatial Isolation
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-1
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Memory domain partitioning for user thread groups
+STATEMENT: >>>
+The Zephyr RTOS shall support the grouping of user threads into memory domains,
+where each domain is defined by a set of non-overlapping memory partitions, and
+a thread may only access memory that belongs to a partition in its assigned domain
+in addition to its own stack buffer, program text, and read-only data.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want logically separate application components to be
+confined to distinct memory regions so that a pointer error in one component
+cannot read or corrupt the data of another component.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-2
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Non-overlapping memory partitions within a domain
+STATEMENT: >>>
+The Zephyr RTOS shall reject at runtime any attempt to add a memory partition to a
+domain that would overlap an existing partition within that domain.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want the kernel to enforce at configuration time that
+partitions do not share addresses so that the isolation boundaries are always
+well-defined.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-3
+STATUS: Active
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Write-XOR-Execute enforcement for memory partitions
+STATEMENT: >>>
+When CONFIG_EXECUTE_XOR_WRITE is enabled, the Zephyr RTOS shall enforce that no
+memory partition is simultaneously writable and executable, preventing code injection
+via writable memory regions.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user on a safety-critical or security-sensitive system I want the
+MPU/MMU hardware to prevent runtime code injection so that an attacker or a
+corrupted data buffer cannot cause arbitrary code execution.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-4
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Spatial isolation between supervisor-mode threads
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to enforce memory access boundaries
+between concurrently executing supervisor-mode (kernel) threads so that an erroneous
+memory access in one supervisor thread cannot corrupt the data or stack of another
+supervisor thread.
+
+NOTE: This requirement is not currently met by the Zephyr implementation. When
+CONFIG_USERSPACE is not enabled, all threads execute in privileged mode and share
+the full address space without any MPU-enforced inter-thread boundary. This is a
+known architectural gap for deployments that cannot enable userspace but still
+require intra-kernel isolation.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a safety-critical system without a full userspace
+partition, I want supervisor threads running different mixed-criticality application
+components to be spatially isolated from each other so that a stray pointer in a
+lower-criticality thread cannot corrupt a higher-criticality thread's data.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Stack Integrity
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-5
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Hardware-backed stack overflow detection
+STATEMENT: >>>
+When CONFIG_HW_STACK_PROTECTION is enabled, the Zephyr RTOS shall use
+architecture-provided hardware (MPU guard region or equivalent) to detect stack
+overflow for threads running in privileged mode and invoke the fatal error handler
+upon detection.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want stack overflows to be caught immediately by hardware
+rather than silently corrupting adjacent memory, so that the system enters a known
+error state rather than continuing with undefined behaviour.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-6
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Compiler stack canary protection
+STATEMENT: >>>
+When CONFIG_STACK_CANARIES (or a stronger variant) is enabled, the Zephyr RTOS
+shall instrument functions with compiler-generated canary values that are verified
+on function return; canary corruption shall trigger a fatal error for the running
+entity.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want buffer overflow attacks or bugs that overwrite the
+stack frame to be detected before the corrupted return address is used, so that
+control flow is not redirected to attacker-controlled code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-7
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Software stack sentinel periodic check
+STATEMENT: >>>
+When CONFIG_STACK_SENTINEL is enabled, the Zephyr RTOS shall store a magic value
+at the lowest address of each thread stack and verify its integrity at context
+switch (outgoing thread), at non-context-switching hardware interrupts (for the
+interrupted thread), upon thread entry-point return, and when a thread calls
+k_yield() without context-switching; detection of sentinel corruption shall invoke
+the fatal error handler for the thread.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user on a platform without hardware stack protection, I want a
+software fallback that detects stack overflow at the earliest observable checkpoint
+so that silent corruption is caught before it causes unpredictable behaviour.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-8
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Stack low-watermark threshold monitoring with callback
+STATEMENT: >>>
+When CONFIG_THREAD_RUNTIME_STACK_SAFETY is enabled, the Zephyr RTOS shall monitor
+each thread's remaining free stack space and invoke a user-defined handler when the
+unused stack fraction falls below a configured percentage threshold, allowing the
+application to take corrective action before overflow occurs.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want early warning before a thread's stack is exhausted so
+that I can increase the stack size or shed work before an overflow occurs.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-9
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Deterministic containment of supervisor-mode stack overflow
+STATEMENT: >>>
+A stack overflow occurring in a supervisor-mode thread shall be deterministically
+detected and shall prevent further corruption of memory outside the overflowing
+thread's stack region, guaranteeing that the rest of the system (other threads and
+kernel data structures) remains in a consistent state.
+
+NOTE: This requirement is not fully met by the current Zephyr implementation.
+CONFIG_HW_STACK_PROTECTION's Kconfig help text explicitly states: "This does not
+necessarily prevent corruption and assertions about the overall system state when a
+fault is triggered cannot be made." The gap is that hardware detection on some
+architectures fires only after the first write beyond the guard region, which may
+have already corrupted adjacent data.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a safety-critical system, I need a guarantee that a
+stack overflow in any thread cannot silently corrupt kernel state or other threads'
+data, because partial corruption leads to undefined behaviour that is harder to
+diagnose than an immediate system halt.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Temporal Isolation
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-10
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Per-thread CPU cycle usage accounting
+STATEMENT: >>>
+When CONFIG_THREAD_RUNTIME_STATS is enabled, the Zephyr RTOS shall maintain per-thread
+accumulated CPU cycle counts, updated at every context switch, and shall expose these
+counts through the thread runtime statistics API so that CPU usage per thread can be
+observed at runtime.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to measure how much CPU time each thread has consumed
+so that I can detect threads that are using more processor time than expected and
+diagnose temporal interference.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-11
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Configurable per-thread timeslice with expiry notification
+STATEMENT: >>>
+When CONFIG_TIMESLICE_PER_THREAD is enabled, the Zephyr RTOS shall support
+configuration of an individual timeslice duration for each preemptible thread and
+shall invoke a user-defined callback when a thread's timeslice expires, allowing
+the application to enforce thread-specific CPU time policies.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to assign different CPU time budgets to threads of the
+same priority so that a computationally intensive thread cannot starve other threads
+at the same priority level indefinitely.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Enforced CPU time budget with deterministic response
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to assign a maximum CPU time budget to a
+thread over a defined period, and shall apply a deterministic, configurable action
+(such as thread suspension or priority demotion) when the thread exhausts its budget,
+without requiring intervention from the application.
+
+NOTE: This requirement is not currently met by the Zephyr implementation.
+CONFIG_TIMESLICE_PER_THREAD provides an expiry callback but the enforcement action
+is left entirely to the application callback; the kernel does not autonomously
+enforce a budget. There is no sliding-window quota mechanism.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a mixed-criticality system, I want the kernel to
+automatically demote or suspend a thread that exceeds its CPU time allocation without
+relying on that thread's cooperation, so that a runaway lower-criticality thread
+cannot indefinitely deny CPU time to higher-criticality threads at the same priority.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-13
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: Freedom From Interference
+TITLE: Bounded and documented worst-case interrupt latency
+STATEMENT: >>>
+For a given Zephyr configuration and target hardware, the kernel shall specify a
+documented upper bound on the worst-case interrupt latency, defined as the maximum
+number of CPU cycles elapsed from hardware interrupt assertion to first instruction
+of the ISR, taking into account all possible kernel critical sections and interrupt
+lock durations in that configuration.
+
+NOTE: This requirement is not currently met by the Zephyr implementation. Zephyr
+does not formally specify or verify worst-case interrupt latency bounds. Critical
+section lengths vary with configuration options and are not guaranteed or published
+per-configuration. This is a prerequisite for hard real-time and safety-certification
+(IEC 61508, ISO 26262) use cases.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a hard real-time or safety-certified system, I need a
+published worst-case interrupt latency figure so that I can perform timing analysis
+and demonstrate that all deadlines are met under worst-case conditions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Fault Containment
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-14
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: User thread fault containment
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, a fatal error in a user-mode thread (such as an
+MPU fault, illegal instruction, or unhandled exception) shall be contained to the
+faulting thread: the thread shall be aborted and the kernel and other threads shall
+remain operational and unaffected.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a misbehaving user thread to be terminated without
+bringing down the entire system so that other components can continue operating or
+take corrective action.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-15
+STATUS: Active
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: System call argument validation for user threads
+STATEMENT: >>>
+When CONFIG_USERSPACE is enabled, the Zephyr RTOS shall validate all arguments
+supplied by a user-mode thread to a system call — including pointer bounds, object
+ownership, and parameter ranges — before any privileged operation is performed;
+any validation failure shall cause the calling thread to be terminated without
+affecting the kernel or other threads.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want the kernel to reject malformed system calls from user
+threads so that a buggy or malicious user thread cannot cause kernel corruption or
+privilege escalation by passing crafted arguments.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Supervisor thread fault containment
+STATEMENT: >>>
+A fatal error occurring in a supervisor-mode thread shall not unconditionally
+terminate the entire system; the Zephyr RTOS shall provide a mechanism by which
+the fault is contained to the affected supervisor thread (or a defined fault
+partition), allowing the rest of the system to continue operating or transition to
+a safe state.
+
+NOTE: This requirement is not currently met by the Zephyr implementation. A fatal
+error in any supervisor-mode thread results in a kernel panic that halts the entire
+system. Supervisor threads are not isolated from each other or from the kernel; there
+is no intra-kernel fault containment mechanism. This is a fundamental architectural
+gap for mixed-criticality deployments where kernel threads of different criticality
+levels coexist.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user deploying a mixed-criticality system, I want a fault in a
+lower-criticality supervisor-mode component to be contained so that
+higher-criticality supervisor threads (e.g., a safety monitor or watchdog) can
+continue executing and bring the system to a defined safe state.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
+[TEXT]
+STATEMENT: >>>
+Resource Isolation
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-42-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Freedom From Interference
+TITLE: Kernel object pool exhaustion isolation
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to limit the number of kernel objects
+(such as timers, memory slab blocks, or semaphore allocations) that can be held or
+consumed by a single thread or memory domain, so that exhaustion of a shared resource
+pool by one component cannot deny service to other components.
+
+NOTE: This requirement is not currently met by the Zephyr implementation. All threads
+share global kernel object pools without per-thread or per-domain quotas. A single
+thread can exhaust a pool (e.g., a k_mem_slab) and starve other threads that depend
+on it. There is no resource budgeting or accounting mechanism at the kernel object
+level.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user building a safety-critical system, I want to guarantee that a
+lower-criticality thread cannot consume all available timer or memory objects and
+thereby cause a higher-criticality thread to fail when it requests a resource.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-35
+
