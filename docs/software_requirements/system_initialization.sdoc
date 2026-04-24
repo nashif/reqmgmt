@@ -1,6 +1,6 @@
 [DOCUMENT]
 TITLE: System Initialization
-REQ_PREFIX: ZEP-SRS-12-
+PREFIX: ZEP-SRS-12-
 
 [GRAMMAR]
 IMPORT_FROM_FILE: software_requirements.sgra
@@ -10,7 +10,128 @@ STATEMENT: >>>
 SPDX-License-Identifier: Apache-2.0
 <<<
 
-[TEXT]
+[REQUIREMENT]
+UID: ZEP-SRS-12-1
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Ordered initialization levels
 STATEMENT: >>>
-TBD
+The Zephyr RTOS shall support an ordered sequence of initialization levels executed during
+system startup, comprising at minimum: EARLY, PRE_KERNEL_1, PRE_KERNEL_2, POST_KERNEL,
+and APPLICATION.
 <<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a well-defined and deterministic initialization order so that
+device drivers, subsystems and application code can be brought up in the correct sequence.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-2
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Registration of initialization callbacks
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to register a function to be called automatically
+at a specified initialization level and priority during system startup.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS developer I want to register my driver or subsystem initialization routine
+to be invoked at the correct phase of boot without modifying the kernel startup code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-3
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Per-level initialization priority
+STATEMENT: >>>
+Within each initialization level the Zephyr RTOS shall invoke registered initialization
+functions in ascending numeric priority order.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-4
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Return value handling during initialization
+STATEMENT: >>>
+The Zephyr RTOS shall treat a non-zero return value from a registered initialization
+function as an initialization failure and invoke the system fatal error handler.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-5
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Main thread creation
+STATEMENT: >>>
+The Zephyr RTOS shall create a main thread that executes the application-provided main()
+function after the APPLICATION initialization level has completed.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want my application's main() function to be called automatically
+after the kernel and all registered subsystems have been initialized.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: Idle thread creation
+STATEMENT: >>>
+The Zephyr RTOS shall create a dedicated idle thread that executes whenever no other
+thread is ready to run.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-7
+STATUS: Draft
+TYPE: Non-Functional
+COMPONENT: System Initialization
+TITLE: Initialization executed in non-preemptible context
+STATEMENT: >>>
+Initialization functions registered at the EARLY, PRE_KERNEL_1 and PRE_KERNEL_2 levels
+shall execute in a non-preemptible context before the kernel scheduler is active.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
+
+[REQUIREMENT]
+UID: ZEP-SRS-12-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: System Initialization
+TITLE: POST_KERNEL initialization with scheduler available
+STATEMENT: >>>
+Initialization functions registered at the POST_KERNEL level shall execute after the
+kernel scheduler is active, allowing the use of kernel services such as semaphores
+and mutexes.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-26
