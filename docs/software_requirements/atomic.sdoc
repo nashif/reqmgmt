@@ -1,0 +1,283 @@
+[DOCUMENT]
+TITLE: Atomic Operations
+PREFIX: ZEP-SRS-13-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[[SECTION]]
+TITLE: Basic Atomic Read and Write
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-4
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic read
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically read the value of an atomic
+variable.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to read and write integer variables shared between threads
+and ISRs without the need for a mutex or spinlock.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-5
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic write
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically set the value of an atomic
+variable and return its previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic clear
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically set an atomic variable to zero
+and return its previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Atomic Arithmetic
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-7
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic add
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically add a value to an atomic
+variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic subtract
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically subtract a value from an atomic
+variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic increment
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically increment an atomic variable
+by one and return its previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic decrement
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically decrement an atomic variable
+by one and return its previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Atomic Bitwise Operations
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-11
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic OR
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically perform a bitwise OR on an
+atomic variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic AND
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically perform a bitwise AND on an
+atomic variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic XOR
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically perform a bitwise XOR on an
+atomic variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic NAND
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically perform a bitwise NAND on an
+atomic variable and return the variable's previous value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Atomic Bit Manipulation
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-15
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic set bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically set a specified bit in an
+atomic variable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic clear bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically clear a specified bit in an
+atomic variable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic test bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically test whether a specified bit
+in an atomic variable is set.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic test and set bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically test whether a specified bit
+in an atomic variable is set and then set that bit, returning the previous bit value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic test and clear bit
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically test whether a specified bit
+in an atomic variable is set and then clear that bit, returning the previous bit value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Compare and Swap
+
+[REQUIREMENT]
+UID: ZEP-SRS-13-20
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Atomic Operations
+TITLE: Atomic compare and swap
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to atomically compare the value of an atomic
+variable with an expected value and, if equal, replace it with a new value, returning
+an indication of whether the swap occurred.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want a compare-and-swap primitive to implement lock-free data
+structures and synchronization algorithms.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-29
+
+[[/SECTION]]
