@@ -246,4 +246,19 @@ RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-31
 
+[REQUIREMENT]
+UID: ZEP-SRS-17-23
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Message Queues
+TITLE: Cancel waiting receivers
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to unblock all threads currently waiting
+to receive a message from an empty message queue, causing those threads to return
+a cancellation error code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-31
+
 [[/SECTION]]
