@@ -1,0 +1,151 @@
+[DOCUMENT]
+TITLE: Pipes
+PREFIX: ZEP-SRS-18-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[[SECTION]]
+TITLE: Pipe Definition and Initialization
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-12
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Static pipe definition
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and initialize a pipe at compile
+time, specifying the size of the internal ring buffer.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to transfer a stream of bytes from one thread to another
+using a bounded ring buffer with blocking semantics.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Runtime pipe initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a pipe at run time using a
+caller-supplied buffer.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Writing to a Pipe
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Write data to a pipe
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to write a block of bytes into a pipe,
+blocking the calling thread if insufficient space is available until the requested
+bytes have been written or a timeout expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-15
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Pipe write timeout behaviour
+STATEMENT: >>>
+When a pipe write operation cannot complete within the specified timeout, the Zephyr
+RTOS shall return the number of bytes successfully written along with a timeout error
+code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Reading from a Pipe
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Read data from a pipe
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to read a block of bytes from a pipe,
+blocking the calling thread if insufficient data is available until the requested bytes
+have been read or a timeout expires.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Pipe read timeout behaviour
+STATEMENT: >>>
+When a pipe read operation cannot complete within the specified timeout, the Zephyr
+RTOS shall return the number of bytes successfully read along with a timeout error code.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[[/SECTION]]
+
+[[SECTION]]
+TITLE: Pipe Control
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Reset a pipe
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to discard all data currently buffered in a
+pipe and unblock any threads waiting to write to or read from that pipe.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[REQUIREMENT]
+UID: ZEP-SRS-18-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Close a pipe
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to close a pipe, causing subsequent write
+operations to fail and allowing pending and future read operations to drain remaining
+buffered data.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-32
+
+[[/SECTION]]
