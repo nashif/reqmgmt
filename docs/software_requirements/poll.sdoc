@@ -1,0 +1,100 @@
+[DOCUMENT]
+TITLE: Poll
+PREFIX: ZEP-SRS-34-
+
+[GRAMMAR]
+IMPORT_FROM_FILE: software_requirements.sgra
+
+[TEXT]
+STATEMENT: >>>
+SPDX-License-Identifier: Apache-2.0
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-1
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Poll event initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a poll event structure,
+specifying the object type, wait mode, and kernel object to monitor.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-2
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Wait on multiple objects
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to block a thread on an array of poll events,
+returning when at least one of the monitored objects becomes ready or a timeout expires.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user, I want to block on multiple kernel objects simultaneously so that
+my thread is woken when any one of them becomes available, without polling or creating
+separate threads for each object.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-3
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Poll signal initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a poll signal object to the
+unsignaled state.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-4
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Reset poll signal
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to reset a poll signal to the unsignaled
+state so that it can be reused as a poll event source.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-5
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Query poll signal state
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query whether a poll signal has been
+raised and to retrieve the associated result value without blocking.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34
+
+[REQUIREMENT]
+UID: ZEP-SRS-34-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Raise a poll signal
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to raise a poll signal with an associated
+result value, unblocking any thread currently waiting on that signal via k_poll().
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-34

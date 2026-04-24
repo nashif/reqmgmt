@@ -532,3 +532,23 @@ lower-priority thread context without creating a dedicated thread for each defer
 <<<
 
 [[/SECTION]]
+
+[[SECTION]]
+TITLE: Poll
+
+[REQUIREMENT]
+UID: ZEP-SYRS-34
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Poll
+TITLE: Multi-object poll mechanism
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to block a thread on multiple kernel objects
+simultaneously, waking when any of the specified objects becomes ready.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user, I want to wait efficiently on multiple event sources (semaphores,
+queues, signals) in a single blocking call rather than polling each object individually.
+<<<
+
+[[/SECTION]]
