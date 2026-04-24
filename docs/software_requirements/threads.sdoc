@@ -73,9 +73,10 @@ UID: ZEP-SRS-1-5
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Threads
-TITLE: Resuming a suspended thread after a timeout
+TITLE: Joining a thread
 STATEMENT: >>>
-The Zephyr RTOS shall provide an interface to resume a suspended thread after a timeout.
+The Zephyr RTOS shall provide an interface to join a thread, blocking the calling thread
+until the specified thread terminates or the specified timeout expires.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -105,7 +106,8 @@ TYPE: Functional
 COMPONENT: Threads
 TITLE: Thread states
 STATEMENT: >>>
-Threads shall have different states to fulfill the Life-cycle of a thread
+The Zephyr RTOS shall define a set of lifecycle states for each thread, including
+at minimum: not started, running, ready, sleeping, waiting, and suspended.
 <<<
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to know in what state a specific thread is.
@@ -123,7 +125,7 @@ TYPE: Functional
 COMPONENT: Threads
 TITLE: Thread stack objects
 STATEMENT: >>>
-Every Thread shall have it's own stack.
+Every thread shall have its own dedicated stack.
 <<<
 USER_STORY: >>>
 As a Zephyr RTOS user I want to be able to configure the stack size of a thread. And every thread shall have it's own dedicated stack.
@@ -185,12 +187,42 @@ UID: ZEP-SRS-1-12
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Threads
-TITLE: Thread Custom Data
+TITLE: Thread custom data
 STATEMENT: >>>
-Every thread shall have a custom data area.
+Every thread shall have a custom data area that can be set and read by the
+application, accessible only by the thread itself.
 <<<
-USER_STORY: >>>
-As a Zephyr RTOS user, I want to be able to set a thread specific custom area for every thread I create and which can be used only by the thread itself or the can be used by the application
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Yielding the CPU
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface for the current thread to voluntarily
+yield the CPU to other ready threads of equal or higher priority.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+
+[REQUIREMENT]
+UID: ZEP-SRS-1-14
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Threads
+TITLE: Thread name
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to assign and retrieve a human-readable
+name string for a thread, to aid in debugging and tracing.
 <<<
 RELATIONS:
 - TYPE: Parent
