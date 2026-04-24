@@ -102,3 +102,74 @@ in a memory slab.
 RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-7
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Heap definition at compile time
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and statically allocate a heap
+object and its backing memory region at compile time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-8
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Heap initialization at runtime
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a heap object over a
+caller-supplied memory region at runtime.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-9
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab definition at compile time
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to define and statically allocate a memory
+slab object and its block array at compile time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-10
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab initialization at runtime
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to initialize a memory slab over a
+caller-supplied buffer, specifying the block size and number of blocks, at runtime.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-9-11
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Objects
+TITLE: Memory slab peak used block count query
+STATEMENT: >>>
+The Zephyr RTOS shall provide an interface to query the maximum number of blocks that
+have been simultaneously allocated from a memory slab since it was last initialized,
+to support worst-case memory usage analysis.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
