@@ -11,7 +11,7 @@ SPDX-License-Identifier: Apache-2.0
 <<<
 
 [[SECTION]]
-TITLE: Thread Scheduling
+TITLE: Multi-Core Thread Scheduling
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-1
@@ -22,6 +22,9 @@ TITLE: Support operation on more than one CPU
 STATEMENT: >>>
 The Zephyr RTOS shall support operation on more than one physical CPU sharing the same kernel state.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-11
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-2
@@ -35,6 +38,9 @@ The Zephyr RTOS shall provide an interface for running threads on specific sets 
 USER_STORY: >>>
 As a Zephyr RTOS user I want Zephyr OS to be able to specify the CPU core or the set of CPU cores on which a thread shall be executed.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-12
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-3
@@ -48,6 +54,9 @@ The Zephyr RTOS shall provide an interface for mutual exclusion between multiple
 USER_STORY: >>>
 As a Zephyr RTOS user I want Zephyr OS to provide synchronization mechanisms between the CPU cores and the access to common resources.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-11
 
 [[/SECTION]]
 
@@ -82,6 +91,9 @@ The Zephyr RTOS shall organize running threads by earliest deadline first priori
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to be able to schedule threads by earliest deadline first.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-6
@@ -95,6 +107,9 @@ The Zephyr RTOS shall provide a thread-pooled work queue utility capable of runn
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to be able to add work items in a thread work queue with different priorities and these shall be scheduled according their priorities.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-33
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-7
@@ -108,6 +123,9 @@ The Zephyr RTOS shall provide an interface for running user-supplied functions.
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to be able to run functions in-order in a separated thread/threads.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-15
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-8
@@ -121,6 +139,9 @@ The Zephyr RTOS shall organize running threads into a fixed list of numeric prio
 USER_STORY: >>>
 As a Zephyr RTOS user, I want that the OS organize running threads in a fixed list of numeric priorities.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-9
@@ -134,6 +155,11 @@ The Zephyr RTOS shall support preemption of a running thread by a higher priorit
 USER_STORY: >>>
 As a Zephyr RTOS user, I want that the OS preempt running threads by a thread with higher priority.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-10
@@ -147,6 +173,9 @@ The Zephyr RTOS shall support thread priorities which cannot be preempted by oth
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to be able to configure thread prioritizes which cannot be preempted by other user threads.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
 
 [REQUIREMENT]
 UID: ZEP-SRS-2-11
@@ -160,5 +189,10 @@ The Zephyr RTOS shall support time sharing of CPU resources among threads of the
 USER_STORY: >>>
 As a Zephyr RTOS user, I want to be able to configure my RTOS in the way, that the CPU resources are shared evenly among executed threads of the same priority.
 <<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-16
+- TYPE: Parent
+  VALUE: ZEP-SYRS-17
 
 [[/SECTION]]
