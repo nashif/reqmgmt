@@ -287,6 +287,21 @@ As a Zephyr RTOS user I want to be able to control the power mode of the MCU and
 <<<
 
 [[SECTION]]
+TITLE: Pipes
+
+[REQUIREMENT]
+UID: ZEP-SYRS-32
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Pipes
+TITLE: Pipes
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to transfer a stream of bytes between threads.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
 TITLE: Queues
 
 [REQUIREMENT]
