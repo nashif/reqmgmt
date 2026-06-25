@@ -62,6 +62,9 @@ FILE: message_queue.sdoc
 FILE: mutex.sdoc
 
 [DOCUMENT_FROM_FILE]
+FILE: pipe.sdoc
+
+[DOCUMENT_FROM_FILE]
 FILE: power_management.sdoc
 
 [DOCUMENT_FROM_FILE]
