@@ -103,7 +103,7 @@ TYPE: Functional
 COMPONENT: Queues
 TITLE: Queue peek item at back
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to peek at the data data item at the back of a queue.
+The Zephyr RTOS shall provide a mechanism to peek at the data item at the back of a queue.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -116,7 +116,7 @@ TYPE: Functional
 COMPONENT: Queues
 TITLE: Queue peek item at front
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to peek at the data data item at the front of a queue.
+The Zephyr RTOS shall provide a mechanism to peek at the data item at the front of a queue.
 <<<
 RELATIONS:
 - TYPE: Parent

@@ -116,7 +116,7 @@ TYPE: Functional
 COMPONENT: FIFOs
 TITLE: FIFO peek item at front
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to peek at the data data item at the front of a FIFO.
+The Zephyr RTOS shall provide a mechanism to peek at the data item at the front of a FIFO.
 <<<
 RELATIONS:
 - TYPE: Parent
