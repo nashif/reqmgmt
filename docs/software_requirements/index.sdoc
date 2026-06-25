@@ -65,6 +65,9 @@ FILE: mutex.sdoc
 FILE: pipe.sdoc
 
 [DOCUMENT_FROM_FILE]
+FILE: poll.sdoc
+
+[DOCUMENT_FROM_FILE]
 FILE: power_management.sdoc
 
 [DOCUMENT_FROM_FILE]
