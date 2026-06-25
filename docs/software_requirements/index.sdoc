@@ -56,6 +56,9 @@ FILE: memory_objects.sdoc
 FILE: memory_protection.sdoc
 
 [DOCUMENT_FROM_FILE]
+FILE: message_queue.sdoc
+
+[DOCUMENT_FROM_FILE]
 FILE: mutex.sdoc
 
 [DOCUMENT_FROM_FILE]
