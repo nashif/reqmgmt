@@ -38,6 +38,9 @@ FILE: hw_arch_interface.sdoc
 FILE: interrupts.sdoc
 
 [DOCUMENT_FROM_FILE]
+FILE: kernel_timing.sdoc
+
+[DOCUMENT_FROM_FILE]
 FILE: lifos.sdoc
 
 [DOCUMENT_FROM_FILE]
