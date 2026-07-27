@@ -206,3 +206,42 @@ When a timer expiry function is called, the Zephyr RTOS shall do so in the inter
 RELATIONS:
 - TYPE: Parent
   VALUE: ZEP-SYRS-18
+
+[REQUIREMENT]
+UID: ZEP-SRS-4-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Timers
+TITLE: Timer resource cleanup
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to release the resources associated with a timer.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-18
+
+[REQUIREMENT]
+UID: ZEP-SRS-4-17
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Timers
+TITLE: Timer cleanup with pending threads
+STATEMENT: >>>
+If a timer is cleaned up while one or more threads are still waiting on it, then the Zephyr RTOS shall leave the timer's resources unreleased and return an error indicating that the cleanup could not be performed.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-18
+
+[REQUIREMENT]
+UID: ZEP-SRS-4-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Timers
+TITLE: Observing timer lifecycle events
+STATEMENT: >>>
+Where timer observers are enabled, the Zephyr RTOS shall provide a mechanism to register observers that are notified of the following timer lifecycle events: initialization, start, stop, and expiry.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-18
