@@ -172,6 +172,50 @@ RELATIONS:
   VALUE: ZEP-SYRS-7
 
 [[SECTION]]
+TITLE: Kernel Timing
+
+[REQUIREMENT]
+UID: ZEP-SYRS-28
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Timing
+TITLE: Time measurement
+STATEMENT: >>>
+The Zephyr RTOS shall provide services to measure the passage of time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to measure elapsed time so that I can implement time-dependent application behavior.
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SYRS-34
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Timing
+TITLE: Delaying thread execution
+STATEMENT: >>>
+The Zephyr RTOS shall provide services to delay the execution of a thread for a period of time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to delay a thread for a defined period so that I can pace my application against the passage of real time.
+<<<
+
+[REQUIREMENT]
+UID: ZEP-SYRS-35
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Kernel Timing
+TITLE: Timeout specification
+STATEMENT: >>>
+The Zephyr RTOS shall provide a means to specify the timeout of a kernel operation as a relative duration or as an absolute point in time.
+<<<
+USER_STORY: >>>
+As a Zephyr RTOS user I want to express when a kernel operation times out either as a delay from the current time or as a fixed point in time so that recurring operations do not accumulate drift.
+<<<
+
+[[/SECTION]]
+
+[[SECTION]]
 TITLE: LIFOs
 
 [REQUIREMENT]
