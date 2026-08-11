@@ -20,9 +20,6 @@ FILE: c_library.sdoc
 FILE: condition_variables.sdoc
 
 [DOCUMENT_FROM_FILE]
-FILE: data_passing.sdoc
-
-[DOCUMENT_FROM_FILE]
 FILE: device_driver_api.sdoc
 
 [DOCUMENT_FROM_FILE]
