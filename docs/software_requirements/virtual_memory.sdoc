@@ -14,26 +14,13 @@ SPDX-License-Identifier: Apache-2.0
 TITLE: Virtual Memory Mapping
 
 [REQUIREMENT]
-UID: ZEP-SRS-36-1
+UID: ZEP-SRS-36-17
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Virtual Memory
-TITLE: Mapping physical memory into the virtual address space
+TITLE: Enforcing mapping access permissions
 STATEMENT: >>>
-Where virtual memory is enabled, the Zephyr RTOS shall provide a mechanism to map a region of physical memory into the virtual address space with caller-specified access permissions.
-<<<
-RELATIONS:
-- TYPE: Parent
-  VALUE: ZEP-SYRS-9
-
-[REQUIREMENT]
-UID: ZEP-SRS-36-2
-STATUS: Draft
-TYPE: Functional
-COMPONENT: Virtual Memory
-TITLE: Unmapping a virtual memory region
-STATEMENT: >>>
-Where virtual memory is enabled, the Zephyr RTOS shall provide a mechanism to unmap a previously mapped virtual memory region so that subsequent accesses to it are no longer permitted.
+While a virtual memory mapping does not permit an access type, when an access of that type is attempted through the mapping, the Zephyr RTOS shall raise a fatal error.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -59,7 +46,20 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: Anonymous memory mapping
 STATEMENT: >>>
-Where virtual memory is enabled, the Zephyr RTOS shall provide a mechanism to allocate and map an anonymous region of memory and to release it back to the system.
+Where virtual memory is enabled, the Zephyr RTOS shall provide a mechanism to allocate and map an anonymous region of memory with caller-specified access permissions.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-36-16
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Virtual Memory
+TITLE: Releasing an anonymous memory mapping
+STATEMENT: >>>
+Where virtual memory is enabled, the Zephyr RTOS shall provide a mechanism to release an anonymous memory region back to the system.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -72,7 +72,7 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: Guard pages for anonymous memory mappings
 STATEMENT: >>>
-When an anonymous memory region is mapped, the Zephyr RTOS shall place inaccessible guard pages adjacent to the region so that accesses beyond its bounds are detected.
+When an anonymous memory region is mapped, the Zephyr RTOS shall place an inaccessible guard page immediately before and immediately after the region so that accesses beyond its bounds are detected.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -85,7 +85,7 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: User-mode-accessible memory mappings
 STATEMENT: >>>
-Where user mode is enabled, the Zephyr RTOS shall provide a mechanism to map a memory region that is accessible from user mode threads.
+Where user mode is enabled, the Zephyr RTOS shall control, for each memory mapping, whether user mode threads may access the mapping.
 <<<
 RELATIONS:
 - TYPE: Parent

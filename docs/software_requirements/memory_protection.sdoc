@@ -10,6 +10,13 @@ STATEMENT: >>>
 SPDX-License-Identifier: Apache-2.0
 <<<
 
+[TEXT]
+STATEMENT: >>>
+Unless a requirement states otherwise, the requirements in this document
+apply where user mode support is enabled. The stack canary requirements
+and the write-XOR-execute enforcement do not depend on user mode support.
+<<<
+
 [REQUIREMENT]
 UID: ZEP-SRS-8-1
 STATUS: Draft
@@ -309,7 +316,7 @@ TYPE: Functional
 COMPONENT: Memory Protection
 TITLE: Memory domain definition
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to define and initialize a memory domain composed of a set of memory partitions.
+The Zephyr RTOS shall provide a mechanism to initialize a memory domain at run time, composed of a set of memory partitions.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -322,7 +329,33 @@ TYPE: Functional
 COMPONENT: Memory Protection
 TITLE: Adding a partition to a memory domain
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to add a memory partition to a memory domain.
+The Zephyr RTOS shall provide a mechanism to add a memory partition to an initialized memory domain.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-8-28
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Protection
+TITLE: Rejecting writable and executable partitions
+STATEMENT: >>>
+Where write-XOR-execute enforcement is enabled, if a memory partition that permits both write and execute access is added to a memory domain, then the Zephyr RTOS shall reject the partition and return an error.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-8-29
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Protection
+TITLE: Rejecting overlapping partitions
+STATEMENT: >>>
+If a memory partition that overlaps an existing partition of the same memory domain is added, then the Zephyr RTOS shall reject the partition and return an error.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -355,6 +388,19 @@ RELATIONS:
   VALUE: ZEP-SYRS-9
 
 [REQUIREMENT]
+UID: ZEP-SRS-8-30
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Protection
+TITLE: Reassigning a thread to another memory domain
+STATEMENT: >>>
+When a thread that is assigned to a memory domain is assigned to another memory domain, the Zephyr RTOS shall remove the thread from its previous memory domain.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
 UID: ZEP-SRS-8-24
 STATUS: Draft
 TYPE: Functional
@@ -374,7 +420,20 @@ TYPE: Functional
 COMPONENT: Memory Protection
 TITLE: Stack canary protection
 STATEMENT: >>>
-Where stack canary protection is enabled, the Zephyr RTOS shall detect corruption of a function's stack frame using a guard value and treat the corruption as a fatal error.
+Where stack canary protection is enabled, the Zephyr RTOS shall detect corruption of a function's stack frame using a guard value.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-8-31
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Protection
+TITLE: Stack canary corruption handling
+STATEMENT: >>>
+If stack frame corruption is detected, then the Zephyr RTOS shall treat the corruption as a fatal software error.
 <<<
 RELATIONS:
 - TYPE: Parent
