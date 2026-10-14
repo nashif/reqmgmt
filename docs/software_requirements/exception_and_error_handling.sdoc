@@ -15,12 +15,9 @@ UID: ZEP-SRS-16-1
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Exception and Error Handling
-TITLE: Fatal Exception Error Handler
+TITLE: Default exception handlers
 STATEMENT: >>>
-The Zephyr RTOS shall provide default handlers for exceptions.
-<<<
-USER_STORY: >>>
-As a Zephyr RTOS user I want exceptions which I did not handle explicitly (by mistake or on purpose) to be caught by a default handler, defined either by Zephyr OS or by myself.
+The Zephyr RTOS shall provide a default handler for every exception.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -31,9 +28,9 @@ UID: ZEP-SRS-16-2
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Exception and Error Handling
-TITLE: Default handler for fatal errors
+TITLE: Default fatal error handler
 STATEMENT: >>>
-The Zephyr RTOS shall provide default handlers for fatal errors that do not have a dedicated handler.
+The Zephyr RTOS shall provide a default fatal error handler.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -46,8 +43,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Unhandled exceptions reported as fatal errors
 STATEMENT: >>>
-When an exception occurs for which no dedicated handling exists, the Zephyr RTOS shall
-report it as a fatal error.
+When an exception is handled by the default exception handler, the Zephyr RTOS shall
+report the exception as a fatal error.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -60,8 +57,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Application-defined fatal error handler
 STATEMENT: >>>
-The Zephyr RTOS shall allow an application to provide its own fatal error handler in
-place of the default handler.
+The Zephyr RTOS shall allow an application to provide, at build time, its own fatal
+error handler in place of the default handler.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -129,8 +126,9 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: System reset on fatal error
 STATEMENT: >>>
-Where reset on fatal error is enabled, the Zephyr RTOS shall reset the system upon a
-fatal error instead of halting it.
+Where reset on fatal error is enabled, when a fatal error occurs and the application
+has not provided its own fatal error handler, the Zephyr RTOS shall reset the system
+instead of halting it.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -143,9 +141,9 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Recovery from a fatal error in thread context
 STATEMENT: >>>
-When the application-provided fatal error handler returns following a fatal error
-attributed to a thread, other than an unrecoverable error, the Zephyr RTOS shall
-terminate the offending thread and continue operation.
+When the application-provided fatal error handler returns following a recoverable
+fatal error attributed to a thread, the Zephyr RTOS shall terminate the offending
+thread and continue operation.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -172,9 +170,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Fatal errors in interrupt context are unrecoverable
 STATEMENT: >>>
-If a fatal error occurs in interrupt context, other than a thread stack overflow
-detected during interrupt exit, then the Zephyr RTOS shall treat the error as
-unrecoverable.
+If a fatal error other than a thread stack overflow occurs in interrupt context,
+then the Zephyr RTOS shall treat the error as unrecoverable.
 <<<
 RELATIONS:
 - TYPE: Parent
