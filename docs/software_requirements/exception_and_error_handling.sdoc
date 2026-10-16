@@ -17,7 +17,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Default exception handlers
 STATEMENT: >>>
-The Zephyr RTOS shall provide a default handler for every exception.
+The Zephyr RTOS shall provide a default handler for each CPU exception defined by
+the underlying architecture.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -41,10 +42,10 @@ UID: ZEP-SRS-16-3
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Exception and Error Handling
-TITLE: Unhandled exceptions reported as fatal errors
+TITLE: Exceptions treated as fatal errors by default
 STATEMENT: >>>
 When an exception is handled by the default exception handler, the Zephyr RTOS shall
-report the exception as a fatal error.
+treat the exception as a fatal error.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -112,8 +113,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: Default fatal error policy
 STATEMENT: >>>
-When a fatal error occurs and the application has not provided its own fatal error
-handler, the Zephyr RTOS shall halt the system.
+When a fatal error is handled by the default fatal error handler, the Zephyr RTOS
+shall halt the system.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -126,9 +127,8 @@ TYPE: Functional
 COMPONENT: Exception and Error Handling
 TITLE: System reset on fatal error
 STATEMENT: >>>
-Where reset on fatal error is enabled, when a fatal error occurs and the application
-has not provided its own fatal error handler, the Zephyr RTOS shall reset the system
-instead of halting it.
+Where reset on fatal error is enabled, when a fatal error is handled by the default
+fatal error handler, the Zephyr RTOS shall reset the system instead of halting it.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -172,6 +172,20 @@ TITLE: Fatal errors in interrupt context are unrecoverable
 STATEMENT: >>>
 If a fatal error other than a thread stack overflow occurs in interrupt context,
 then the Zephyr RTOS shall treat the error as unrecoverable.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-5
+
+[REQUIREMENT]
+UID: ZEP-SRS-16-13
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Exception and Error Handling
+TITLE: Fatal error diagnostics
+STATEMENT: >>>
+When a fatal error occurs, the Zephyr RTOS shall report diagnostic information
+identifying the reason for the error and the execution context in which it occurred.
 <<<
 RELATIONS:
 - TYPE: Parent
