@@ -195,8 +195,8 @@ TYPE: Functional
 COMPONENT: Queues
 TITLE: Queue cancel waiting thread
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to cause the highest-priority thread blocked
-waiting to get an item from a queue to return without an item.
+The Zephyr RTOS shall provide a mechanism to cause the highest-priority, longest-waiting
+thread waiting to get an item from a queue to return without an item.
 <<<
 RELATIONS:
 - TYPE: Parent
