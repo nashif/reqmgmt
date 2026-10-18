@@ -181,7 +181,22 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: Collecting demand paging statistics
 STATEMENT: >>>
-Where demand paging statistics are enabled, the Zephyr RTOS shall provide a mechanism to query system-wide and per-thread demand paging statistics.
+Where demand paging statistics are enabled, the Zephyr RTOS shall provide a mechanism
+to query system-wide demand paging statistics.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-36-18
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Virtual Memory
+TITLE: Collecting per-thread demand paging statistics
+STATEMENT: >>>
+Where demand paging statistics are enabled, the Zephyr RTOS shall provide a mechanism
+to query the demand paging statistics of a specific thread.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -194,7 +209,22 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: Collecting demand paging timing histograms
 STATEMENT: >>>
-Where demand paging timing histograms are enabled, the Zephyr RTOS shall provide a mechanism to query histograms of page eviction and backing store access times.
+Where demand paging timing histograms are enabled, the Zephyr RTOS shall provide a
+mechanism to query histograms of page eviction times.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
+UID: ZEP-SRS-36-19
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Virtual Memory
+TITLE: Collecting backing store timing histograms
+STATEMENT: >>>
+Where demand paging timing histograms are enabled, the Zephyr RTOS shall provide a
+mechanism to query histograms of backing store access times.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -207,7 +237,9 @@ TYPE: Functional
 COMPONENT: Virtual Memory
 TITLE: On-demand evictable code and data sections
 STATEMENT: >>>
-Where demand paging is enabled, the Zephyr RTOS shall support placing code and data in sections that are loaded into physical memory on demand and may be evicted when not in use.
+Where demand paging is enabled, the Zephyr RTOS shall support designating code and
+data that are loaded into physical memory on demand and may be evicted when not in
+use.
 <<<
 RELATIONS:
 - TYPE: Parent

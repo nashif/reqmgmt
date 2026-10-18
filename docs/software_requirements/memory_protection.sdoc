@@ -414,6 +414,20 @@ RELATIONS:
   VALUE: ZEP-SYRS-9
 
 [REQUIREMENT]
+UID: ZEP-SRS-8-32
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Memory Protection
+TITLE: Response to a user thread memory access violation
+STATEMENT: >>>
+If a user mode thread attempts to access memory outside the regions it is permitted
+to access, then the Zephyr RTOS shall raise a fatal error attributed to that thread.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-9
+
+[REQUIREMENT]
 UID: ZEP-SRS-8-25
 STATUS: Draft
 TYPE: Functional
