@@ -129,7 +129,8 @@ TYPE: Functional
 COMPONENT: Condition Variables
 TITLE: Re-acquiring the mutex on return from wait
 STATEMENT: >>>
-When a wait on a condition variable returns, whether due to a signal, a timeout, or a non-blocking request, the Zephyr RTOS shall return with the associated mutex locked by the calling thread.
+When a wait on a condition variable returns, the Zephyr RTOS shall return with the
+associated mutex locked by the calling thread.
 <<<
 RELATIONS:
 - TYPE: Parent
