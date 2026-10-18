@@ -11,6 +11,19 @@ SPDX-License-Identifier: Apache-2.0
 <<<
 
 [REQUIREMENT]
+UID: ZEP-SRS-37-6
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Futex
+TITLE: Pending on a futex
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism for a thread to pend on a futex.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-36
+
+[REQUIREMENT]
 UID: ZEP-SRS-37-1
 STATUS: Draft
 TYPE: Functional
