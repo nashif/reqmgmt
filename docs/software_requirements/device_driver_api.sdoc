@@ -46,8 +46,21 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Defining a device instance
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to define a device instance at build time
-together with its initialization function and its driver API.
+The Zephyr RTOS shall provide a mechanism to define a device instance at build time.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-21
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Device initialization function
+STATEMENT: >>>
+Where a device instance defines an initialization function, the Zephyr RTOS shall
+invoke that function when the device instance is initialized.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -62,6 +75,20 @@ TITLE: Obtaining a device by name
 STATEMENT: >>>
 The Zephyr RTOS shall provide a mechanism to obtain, at run time, a reference to a
 device instance by its name.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-22
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Unavailable device lookup by name
+STATEMENT: >>>
+If no device instance matches the requested name, or the matching device instance is
+not ready, then the Zephyr RTOS shall indicate that no device is available.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -102,8 +129,24 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Obtaining a device by devicetree compatible
 STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to obtain, at build time, a reference to an
+arbitrary enabled device instance matching a devicetree compatible, yielding no device
+when none exists.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-23
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Obtaining the device of a unique compatible
+STATEMENT: >>>
 The Zephyr RTOS shall provide a mechanism to obtain, at build time, a reference to a
-device instance by its devicetree compatible.
+device instance by devicetree compatible that fails the build when no enabled instance
+of the compatible exists, selecting an arbitrary instance when more than one exists.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -116,8 +159,9 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Obtaining a device by instance index
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to obtain, at build time, a reference to a
-device instance by the instance index of its devicetree compatible.
+The Zephyr RTOS shall provide a mechanism for a driver to obtain, at build time, a
+reference to a device instance by the instance number of the devicetree nodes matching
+the driver's compatible.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -137,13 +181,70 @@ RELATIONS:
   VALUE: ZEP-SYRS-4
 
 [REQUIREMENT]
+UID: ZEP-SRS-14-24
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Readiness of an invalid device reference
+STATEMENT: >>>
+If an invalid device reference is passed to the readiness check, then the Zephyr RTOS
+shall report it as not ready.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-25
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Device readiness condition
+STATEMENT: >>>
+The Zephyr RTOS shall report a device instance as ready only when its initialization
+has completed successfully.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
 UID: ZEP-SRS-14-7
 STATUS: Draft
 TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Deferred device initialization
 STATEMENT: >>>
-The Zephyr RTOS shall provide a mechanism to defer a device's initialization so that it is not initialized during system startup but can be initialized later at runtime.
+The Zephyr RTOS shall provide a mechanism to mark, at build time, a device instance
+for deferred initialization.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-26
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Skipping deferred devices at startup
+STATEMENT: >>>
+When the system starts up, the Zephyr RTOS shall not initialize device instances
+marked for deferred initialization.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-27
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Run-time device initialization
+STATEMENT: >>>
+The Zephyr RTOS shall provide a mechanism to initialize a device instance at run
+time.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -196,7 +297,24 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Rejecting de-initialization of an unsupported device
 STATEMENT: >>>
-If de-initialization is requested for a device that does not provide a de-initialization function, then the Zephyr RTOS shall report that the operation is not supported.
+Where device de-initialization is enabled, if de-initialization is requested for a
+device that does not provide a de-initialization function, then the Zephyr RTOS shall
+report that the operation is not supported.
+<<<
+RELATIONS:
+- TYPE: Parent
+  VALUE: ZEP-SYRS-4
+
+[REQUIREMENT]
+UID: ZEP-SRS-14-28
+STATUS: Draft
+TYPE: Functional
+COMPONENT: Device Driver API
+TITLE: Failed device de-initialization
+STATEMENT: >>>
+Where device de-initialization is enabled, if the de-initialization of a device
+fails, then the Zephyr RTOS shall return the error and leave the device in its
+initialized state.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -209,8 +327,8 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Device readiness after de-initialization
 STATEMENT: >>>
-When a device is de-initialized, the Zephyr RTOS shall report the device as not
-ready.
+Where device de-initialization is enabled, when a device is de-initialized, the
+Zephyr RTOS shall report the device as not ready.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -223,8 +341,8 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: Re-initializing a de-initialized device
 STATEMENT: >>>
-The Zephyr RTOS shall allow a de-initialized device to be initialized again at
-runtime.
+Where device de-initialization is enabled, the Zephyr RTOS shall allow a
+de-initialized device to be initialized again at run time.
 <<<
 RELATIONS:
 - TYPE: Parent
@@ -237,8 +355,9 @@ TYPE: Functional
 COMPONENT: Device Driver API
 TITLE: De-initializing an uninitialized device
 STATEMENT: >>>
-If de-initialization is requested for a device that has not been initialized, then
-the Zephyr RTOS shall return an error indicating the operation is not permitted.
+Where device de-initialization is enabled, if de-initialization is requested for a
+device that has not been initialized, then the Zephyr RTOS shall return an error
+indicating the operation is not permitted.
 <<<
 RELATIONS:
 - TYPE: Parent
